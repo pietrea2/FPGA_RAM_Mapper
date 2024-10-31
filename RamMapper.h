@@ -27,6 +27,8 @@ public:
     void parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBlockCount);
     void mapPhysicalRAM(int architecture);
 
+    void printAllCircuits();
+
 
 
 

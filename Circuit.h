@@ -33,9 +33,12 @@ public:
     Circuit();
     ~Circuit();
 
+    void setCircuitID(int id);
+    void setLogicBlocks(int amount);
     void insertLogicalRAM();
     void mapBRAMS();
 
+    void printCircuit();
 
 
 };

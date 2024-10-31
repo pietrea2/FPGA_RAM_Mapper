@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
 
     RamMapper mapper;
     mapper.parseBenchmarkCircuits(argv[1], argv[2]);
+    mapper.printAllCircuits();
     mapper.mapPhysicalRAM(atoi(argv[4]));
 
     return 0;
