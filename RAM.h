@@ -12,11 +12,15 @@
 using namespace std;
 
 class RAM{
+
+    enum LogicalRamModes { ROM, SinglePort, SimpleDualPort, TrueDualPort };
+    enum BRAMs { LUTRAM, BRAM8K, BRAM128K };
+
 private:
 
     //logical RAM data members
     int logical_ram_id;
-    int logical_ram_mode;
+    LogicalRamModes logical_ram_mode;
     int logical_ram_depth;
     int logical_ram_width;
 
@@ -30,14 +34,13 @@ public:
     RAM();
     ~RAM();
 
-    void insertLogicalRAM();
+    void setLogicalRAM(int id, string mode, int depth, int width);
     void mapBRAMS();
     void mapLUTRAM();
     void mapBRAM8K();
     void mapBRAM128K();
 
-    enum LogicalRamModes { ROM, SinglePort, SimpleDualPort, TrueDualPort };
-    enum BRAMs { LUTRAM, BRAM8K, BRAM128K };
+    void printLogicalRAMs();
 
 
 };

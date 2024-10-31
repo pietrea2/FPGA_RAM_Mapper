@@ -13,6 +13,7 @@ RamMapper::~RamMapper(){
 
 void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBlockCount){
 
+    //Parse logical block count file
     string input;
     ifstream logicalCountFile;
     logicalCountFile.open(logicalBlockCount);
@@ -32,6 +33,29 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
     }
 
     logicalCountFile.close();
+
+
+    //Parse logical RAM file
+    ifstream logicalRamFile;
+    logicalRamFile.open(logicalRAMsList);
+    if( logicalRamFile.is_open() ){
+        //Pass through first 2 lines in file
+        getline(logicalRamFile, input);
+        cout << input << endl;
+        getline(logicalRamFile, input);
+        cout << input << endl;
+    }
+    
+    int ramID;
+    string ramMode;
+    int depth, width;
+    
+    while( logicalRamFile >> circ_id >> ramID >> ramMode >> depth >> width ){
+        circuit_array[circ_id].insertLogicalRAM(ramID, ramMode, depth, width);
+    }
+
+    logicalRamFile.close();
+
 
 }
 
