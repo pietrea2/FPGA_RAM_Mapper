@@ -25,6 +25,17 @@ private:
     int logical_ram_width;
 
     //physical RAM data members (BRAM)
+    int additional_LUTs_needed;
+    int physical_ram_id;
+    int parallel_RAMs;
+    int series_RAMs;
+    int RAM_type;
+    int physical_width;
+    int physical_depth;
+
+    long int ram_area;
+    
+
 
 
 
@@ -35,10 +46,12 @@ public:
     ~RAM();
 
     void setLogicalRAM(int id, string mode, int depth, int width);
-    void mapBRAMS();
+    void mapBRAMS(int arch);
     void mapLUTRAM();
-    void mapBRAM8K();
-    void mapBRAM128K();
+    void mapBRAM8K(int arch);
+    void mapBRAM128K(int arch);
+
+    long int calcRamArea(int LUTRAM_support, int bits, int max_width);
 
     void printLogicalRAMs();
 

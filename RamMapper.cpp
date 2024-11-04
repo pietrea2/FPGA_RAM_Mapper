@@ -61,6 +61,10 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
 
 void RamMapper::mapPhysicalRAM(int architecture){
 
+    for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
+        (*i).mapBRAMS(architecture);
+    }
+
 }
 
 void RamMapper::printAllCircuits(){

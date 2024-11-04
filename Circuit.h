@@ -36,8 +36,10 @@ public:
     void setCircuitID(int id);
     void setLogicBlocks(int amount);
     void insertLogicalRAM(int id, string mode, int depth, int width);
-    void mapBRAMS();
+    void mapBRAMS(int arch);
 
+    long long calcTotalArea();
+    
     void printCircuit();
 
 

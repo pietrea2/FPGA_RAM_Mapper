@@ -24,12 +24,22 @@ void Circuit::insertLogicalRAM(int id, string mode, int depth, int width){
     ram_array.push_back(ram);
 }
 
-void Circuit::mapBRAMS(){
+void Circuit::mapBRAMS(int arch){
+
+    for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
+        (*i).mapBRAMS(arch);
+    }
 
 }
 
-void Circuit::printCircuit(){
+long long Circuit::calcTotalArea(){
+
+
     
+}
+
+void Circuit::printCircuit(){
+
     cout << circuit_id << "   " << num_logic_blocks << endl;
 
     for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
