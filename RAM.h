@@ -8,6 +8,7 @@
 #include <cstdlib>
 
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -25,16 +26,15 @@ private:
     int logical_ram_width;
 
     //physical RAM data members (BRAM)
+    BRAMs BRAM_type;
     int additional_LUTs_needed;
     int physical_ram_id;
     int parallel_RAMs;
     int series_RAMs;
-    int RAM_type;
     int physical_width;
     int physical_depth;
+    long int ram_area = 0;
 
-    long int ram_area;
-    
 
 
 
@@ -46,13 +46,17 @@ public:
     ~RAM();
 
     void setLogicalRAM(int id, string mode, int depth, int width);
+    string romToString(LogicalRamModes mode);
     void mapBRAMS(int arch);
+    int  calcPhysicalBlocks(int logical_length, int physical_length);
+    void saveRamMapping(int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
     void mapLUTRAM();
     void mapBRAM8K(int arch);
     void mapBRAM128K(int arch);
 
     long int calcRamArea(int LUTRAM_support, int bits, int max_width);
 
+    void printRamMapping(ofstream& mapping_file);
     void printLogicalRAMs();
 
 

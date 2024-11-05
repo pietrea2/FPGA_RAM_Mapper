@@ -34,12 +34,14 @@ public:
     ~Circuit();
 
     void setCircuitID(int id);
+    int getCircuitID();
     void setLogicBlocks(int amount);
     void insertLogicalRAM(int id, string mode, int depth, int width);
     void mapBRAMS(int arch);
 
     long long calcTotalArea();
     
+    void printCircuitMapping(ofstream& mapping_file);
     void printCircuit();
 
 

@@ -26,6 +26,7 @@ public:
     ~RamMapper();
     void parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBlockCount);
     void mapPhysicalRAM(int architecture);
+    void genMappingFile(char *mapping_file);
 
     void printAllCircuits();
 

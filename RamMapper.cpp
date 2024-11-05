@@ -67,6 +67,19 @@ void RamMapper::mapPhysicalRAM(int architecture){
 
 }
 
+void RamMapper::genMappingFile(char *mapping_file){
+
+    string input;
+    ofstream  mappingFileStream;
+    mappingFileStream.open(mapping_file);
+
+    for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
+        (*i).printCircuitMapping(mappingFileStream);
+    }
+
+    mappingFileStream.close();
+}
+
 void RamMapper::printAllCircuits(){
 
     // Print vector elements using iterators
