@@ -124,6 +124,7 @@ void RAM::mapLUTRAM(){
 
                 extra_LUTs = decoders + muxes;
                 extra_logic_blocks = extra_LUTs / 10;
+                if(extra_LUTs % 10) extra_logic_blocks += 1;
             }
             else{
                 invalid_mapping = 1;
@@ -188,6 +189,7 @@ void RAM::mapBRAM8K(int arch){
 
                 extra_LUTs = decoders + muxes;
                 extra_logic_blocks = extra_LUTs / 10;
+                if(extra_LUTs % 10) extra_logic_blocks += 1;
             }
             else{
                 invalid_mapping = 1;
@@ -250,6 +252,7 @@ void RAM::mapBRAM128K(int arch){
 
                 extra_LUTs = decoders + muxes;
                 extra_logic_blocks = extra_LUTs / 10;
+                if(extra_LUTs % 10) extra_logic_blocks += 1;
             }
             else{
                 invalid_mapping = 1;
