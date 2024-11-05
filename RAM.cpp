@@ -62,7 +62,7 @@ void RAM::mapBRAMS(int arch){
         mapLUTRAM();
     }
 
-    //mapBRAM8K(arch);
+    mapBRAM8K(arch);
     //mapBRAM128K(arch);
 
 
@@ -232,7 +232,7 @@ void RAM::printRamMapping(ofstream& mapping_file){
                  << "ID " << physical_ram_id << " "
                  << "S "  << series_RAMs << " "
                  << "P "  << parallel_RAMs << " "
-                 << "Type " << BRAM_type + 1 << " "
+                 << "Type " << BRAM_type << " "
                  << "Mode " << romToString(logical_ram_mode) << " "
                  << "W "  << physical_width << " "
                  << "D "  << physical_depth << endl;

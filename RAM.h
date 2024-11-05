@@ -16,7 +16,7 @@ using namespace std;
 class RAM{
 
     enum LogicalRamModes { ROM, SinglePort, SimpleDualPort, TrueDualPort };
-    enum BRAMs { LUTRAM, BRAM8K, BRAM128K };
+    enum BRAMs { LUTRAM=1, BRAM8K, BRAM128K };
 
 private:
 
@@ -27,7 +27,7 @@ private:
     int logical_ram_width;
 
     //physical RAM data members (BRAM)
-    BRAMs BRAM_type;
+    int BRAM_type;
     int additional_LUTs_needed;
     int physical_ram_id;
     int parallel_RAMs;
