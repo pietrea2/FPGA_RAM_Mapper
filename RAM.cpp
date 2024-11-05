@@ -92,10 +92,6 @@ void RAM::saveRamMapping(int additional_LUTs, int phys_ram_id, int p, int s, BRA
 
 void RAM::mapLUTRAM(){
 
-    //try both modes: 10bit wide and 20bit wide words
-    int LUT_depth_used;
-    int LUT_width_used;
-
     long int cur_area;
     int S = 1;
     int P;
@@ -104,6 +100,7 @@ void RAM::mapLUTRAM(){
     int extra_LUTs = 0;
     int extra_logic_blocks = 0;
     
+    //try both modes: 10bit wide and 20bit wide words
     int phys_depth = 64;
     int phys_width = 10;
 
@@ -185,7 +182,7 @@ void RAM::printRamMapping(ofstream& mapping_file){
                  << "ID " << physical_ram_id << " "
                  << "S "  << series_RAMs << " "
                  << "P "  << parallel_RAMs << " "
-                 << "Type " << BRAM_type << " "
+                 << "Type " << (BRAM_type + 1) << " "
                  << "Mode " << romToString(logical_ram_mode) << " "
                  << "W "  << physical_width << " "
                  << "D "  << physical_depth << endl;
