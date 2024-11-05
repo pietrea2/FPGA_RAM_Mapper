@@ -179,7 +179,7 @@ void RAM::mapBRAM8K(int arch){
             S = calcPhysicalBlocks(logical_ram_depth, depth);
 
             //only map if 16 or less blocks in series needed
-            if(decoders <= 16){
+            if(S <= 16){
 
                 //Calc extra logic needed due to Series blocks
                 if(S > 2) decoders = S;
@@ -241,7 +241,7 @@ void RAM::mapBRAM128K(int arch){
             S = calcPhysicalBlocks(logical_ram_depth, depth);
 
             //only map if 16 or less blocks in series needed
-            if(decoders <= 16){
+            if(S <= 16){
 
                 //Calc extra logic needed due to Series blocks
                 if(S > 2) decoders = S;
