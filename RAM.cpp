@@ -135,7 +135,7 @@ void RAM::mapBRAM(int size, int max_width, int ratio){
         cur_area = S * P * bram_area + extra_logic_blocks * 35000;
 
         if( (ram_area == 0 || cur_area < ram_area) && !invalid_mapping ){
-            saveRamMapping(extra_LUTs, logical_ram_id, P, S, BRAMs::BRAM128K, width, depth, cur_area);
+            saveRamMapping(extra_LUTs, logical_ram_id, P, S, LUTRAM, width, depth, cur_area);
         }
 
     }
