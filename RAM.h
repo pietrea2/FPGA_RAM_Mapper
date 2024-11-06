@@ -28,7 +28,7 @@ private:
 
     //physical RAM data members (BRAM)
     int BRAM_type;
-    int additional_LUTs_needed;
+    long int additional_LUTs_needed;
     int physical_ram_id;
     int parallel_RAMs;
     int series_RAMs;
@@ -50,7 +50,7 @@ public:
     string romToString(LogicalRamModes mode);
     void mapBRAMS(int arch);
     int  calcPhysicalBlocks(int logical_length, int physical_length);
-    void saveRamMapping(int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
+    void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
     void mapLUTRAM();
     void mapBRAM8K(int arch);
     void mapBRAM128K(int arch);

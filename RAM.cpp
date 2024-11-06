@@ -65,7 +65,7 @@ void RAM::mapBRAMS(int arch){
             mapBRAM128K(arch);
             break;
         case 2:
-            mapBRAM(1024, 32, 10);
+            mapBRAM(2048, 32, 10);
             break;
         case 3:
             if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapLUTRAM();
@@ -91,9 +91,10 @@ void RAM::mapBRAM(int size, int max_width, int ratio){
     long int cur_area;
     int S = 1;
     int P;
-    int muxes = 0;
+    long int muxes = 0;
+    int mux_count;
     int decoders = 0;
-    int extra_LUTs = 0;
+    long int extra_LUTs = 0;
     int extra_logic_blocks = 0;
     int invalid_mapping = 0;
 
@@ -113,10 +114,24 @@ void RAM::mapBRAM(int size, int max_width, int ratio){
                 //Calc extra logic needed due to Series blocks
                 if(S > 2) decoders = S;
                 else decoders = 1;
-                muxes = logical_ram_width;
+                
+                if(1){
+                    mux_count = logical_ram_width;
+                    int num_luts;
+                    int b;
+                    for(int row = mux_count; row >=1; row--){
+                        num_luts = (S + 5)/6;
+                        b = num_luts*(num_luts+1)/2;
+                        muxes += row  *  (b*(b+1)/2);
+                    }
+                }
+                else muxes = logical_ram_width*(logical_ram_width+1)/2;
 
                 extra_LUTs = decoders + muxes;
                 if(logical_ram_mode == LogicalRamModes::TrueDualPort) extra_LUTs = extra_LUTs * 2;
+                //extra_LUTs = extra_LUTs * logical_ram_depth;
+                //extra_LUTs = 1 * (((logical_ram_mode == ROM) ? 0 : decoders) + muxes) * ((logical_ram_mode == TrueDualPort) ? 2 : 1);
+                
 
                 extra_logic_blocks = extra_LUTs / 10;
                 if(extra_LUTs % 10) extra_logic_blocks += 1;
@@ -151,7 +166,7 @@ int RAM::calcPhysicalBlocks(int logical_length, int physical_length){
 
 }
 
-void RAM::saveRamMapping(int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area){
+void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area){
 
     additional_LUTs_needed = additional_LUTs;
     physical_ram_id = phys_ram_id;
