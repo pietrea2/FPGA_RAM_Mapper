@@ -54,6 +54,7 @@ public:
     void mapLUTRAM();
     void mapBRAM8K(int arch);
     void mapBRAM128K(int arch);
+    void mapBRAM(int size, int max_width, int ratio);
 
     long int calcRamArea(int LUTRAM_support, int bits, int max_width);
 

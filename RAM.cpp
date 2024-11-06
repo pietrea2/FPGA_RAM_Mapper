@@ -58,13 +58,87 @@ string RAM::romToString(LogicalRamModes mode){
 
 void RAM::mapBRAMS(int arch){
 
-    if(logical_ram_mode != LogicalRamModes::TrueDualPort){
-        mapLUTRAM();
+    switch (arch) {
+        case 1:
+            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapLUTRAM();
+            mapBRAM8K(arch);
+            mapBRAM128K(arch);
+            break;
+        case 2:
+            mapBRAM(1024, 32, 10);
+            break;
+        case 3:
+            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapLUTRAM();
+            mapBRAM(1024, 32, 10);
+            break;
+        default:
+            break;
     }
 
-    mapBRAM8K(arch);
-    mapBRAM128K(arch);
+}
 
+void RAM::mapBRAM(int size, int max_width, int ratio){
+
+    //loop through all possible width and depth configuration
+    //calc max_width available for this logical RAM type
+    if(logical_ram_mode == LogicalRamModes::TrueDualPort) max_width = max_width / 2;
+    
+    int bram_size = size;
+    int depth;
+    long int bram_area = 9000 + 5*bram_size + 90*sqrt(bram_size) + 1200*max_width;
+
+    //variables needed to keep track of mapping
+    long int cur_area;
+    int S = 1;
+    int P;
+    int muxes = 0;
+    int decoders = 0;
+    int extra_LUTs = 0;
+    int extra_logic_blocks = 0;
+    int invalid_mapping = 0;
+
+    //loop through all possible width and depth configuration
+    for(int width = 1; width <= max_width; width = width * 2 ){
+        depth = bram_size / width;
+
+        //if need to increase depth of RAM, put blocks in Series
+        if(logical_ram_depth > depth){
+
+            //Calc how many blocks in Series (S)
+            S = calcPhysicalBlocks(logical_ram_depth, depth);
+
+            //only map if 16 or less blocks in series needed
+            if(S <= 16){
+
+                //Calc extra logic needed due to Series blocks
+                if(S > 2) decoders = S;
+                else decoders = 1;
+                muxes = logical_ram_width;
+
+                extra_LUTs = decoders + muxes;
+                if(logical_ram_mode == LogicalRamModes::TrueDualPort) extra_LUTs = extra_LUTs * 2;
+
+                extra_logic_blocks = extra_LUTs / 10;
+                if(extra_LUTs % 10) extra_logic_blocks += 1;
+
+            }
+            else{
+                invalid_mapping = 1;
+                continue;
+            }
+        }
+
+        //Calc how many blocks in Parallel (P)
+        P = calcPhysicalBlocks(logical_ram_width, width);
+        
+        //Calc area, set to best area (if smallest so far)
+        cur_area = S * P * bram_area + extra_logic_blocks * 35000;
+
+        if( (ram_area == 0 || cur_area < ram_area) && !invalid_mapping ){
+            saveRamMapping(extra_LUTs, logical_ram_id, P, S, BRAMs::BRAM128K, width, depth, cur_area);
+        }
+
+    }
 
 }
 
@@ -256,7 +330,7 @@ void RAM::mapBRAM128K(int arch){
 
                 extra_LUTs = decoders + muxes;
                 if(logical_ram_mode == LogicalRamModes::TrueDualPort) extra_LUTs = extra_LUTs * 2;
-                
+
                 extra_logic_blocks = extra_LUTs / 10;
                 if(extra_LUTs % 10) extra_logic_blocks += 1;
 
