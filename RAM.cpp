@@ -123,6 +123,8 @@ void RAM::mapLUTRAM(){
                 muxes = logical_ram_width;
 
                 extra_LUTs = decoders + muxes;
+                if(logical_ram_mode == LogicalRamModes::TrueDualPort) extra_LUTs = extra_LUTs * 2;
+
                 extra_logic_blocks = extra_LUTs / 10;
                 if(extra_LUTs % 10) extra_logic_blocks += 1;
             }
@@ -188,6 +190,8 @@ void RAM::mapBRAM8K(int arch){
                 muxes = logical_ram_width;
 
                 extra_LUTs = decoders + muxes;
+                if(logical_ram_mode == LogicalRamModes::TrueDualPort) extra_LUTs = extra_LUTs * 2;
+
                 extra_logic_blocks = extra_LUTs / 10;
                 if(extra_LUTs % 10) extra_logic_blocks += 1;
             }
@@ -251,8 +255,11 @@ void RAM::mapBRAM128K(int arch){
                 muxes = logical_ram_width;
 
                 extra_LUTs = decoders + muxes;
+                if(logical_ram_mode == LogicalRamModes::TrueDualPort) extra_LUTs = extra_LUTs * 2;
+                
                 extra_logic_blocks = extra_LUTs / 10;
                 if(extra_LUTs % 10) extra_logic_blocks += 1;
+
             }
             else{
                 invalid_mapping = 1;
