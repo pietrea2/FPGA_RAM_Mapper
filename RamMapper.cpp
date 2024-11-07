@@ -69,7 +69,7 @@ void RamMapper::mapPhysicalRAM(int architecture){
     else if(architecture == 2){
 
         //loop for BRAM sizes (1k - 128k)
-        long double best_geo_average = 0.0;
+        long double best_geo_average;
         int best_width, best_ratio;
         long double curr_geo_average;
 
@@ -77,9 +77,11 @@ void RamMapper::mapPhysicalRAM(int architecture){
         int max_size = 128;
         for(int size = 1; size <= max_size; size *= 2){
 
+            best_geo_average = 0.0;
+            
             //loop for sizes of max_width (8 - 512)
             for(int width = 2; width <= 512; width *= 2){
-
+                
                 //loop for ratio of LBs to RAM blocks
                 for(int ratio = 1; ratio <= 100; ratio++){
 
