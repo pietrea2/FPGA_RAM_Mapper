@@ -52,6 +52,7 @@ public:
     vector<long long> mapArch2BRAM(int size, int width, int ratio);
     int  calcPhysicalBlocks(int logical_length, int physical_length);
     void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
+    void clearMapping();
     void mapLUTRAM();
     void mapBRAM8K(int arch);
     void mapBRAM128K(int arch);

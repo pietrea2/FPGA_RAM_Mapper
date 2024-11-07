@@ -59,12 +59,31 @@ void Circuit::mapSingleBRAM(int size, int width, int ratio){
     calcTotalArea();
 }
 
+void Circuit::clearMapping(){
+
+    block_count.clear();
+    LUT_blocks_used = 0;
+    BRAM_8K_used = 0;
+    BRAM_128K_used = 0;
+    additional_LUTs = 0;
+
+    regular_LBs_used = 0;
+    required_LBs = 0;
+    total_FPGA_area = 0.0;
+
+    for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
+        (*i).clearMapping();
+    }
+}
+
 void Circuit::calcTotalArea(){
 
+    /*
     cout << "LUT_blocks_used: " << LUT_blocks_used
          << " 8Ks used: " << BRAM_8K_used
          << " 128ks used: " << BRAM_128K_used
          << " Additional LUTs needed: " << additional_LUTs;
+    */
 
     int LUTRAM_ratio = 1;
     int BRAM_8K_ratio = 10;
@@ -88,12 +107,12 @@ void Circuit::calcTotalArea(){
     long double area = area_LBs + are_8K + are_128K;
     total_FPGA_area = area;
     
-    
+    /*
     cout << " Tiles: " << limiting_factor << " ";
     cout << "Circuit " << circuit_id << " area: " << scientific;
     cout << area;
     cout << defaultfloat << endl;
-
+    */
     
 }
 

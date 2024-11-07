@@ -96,6 +96,11 @@ void RamMapper::mapPhysicalRAM(int architecture){
                         best_width = width;
                         best_ratio = ratio;
                     }
+
+                    //clear best solution variables in circuit
+                    for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
+                        (*i).clearMapping();
+                    }
                     
                 }
             }

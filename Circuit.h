@@ -44,6 +44,7 @@ public:
     void insertLogicalRAM(int id, string mode, int depth, int width);
     void mapBRAMS(int arch);
     void mapSingleBRAM(int size, int width, int ratio);
+    void clearMapping();
 
     void calcTotalArea();
     long double getCircuitArea();

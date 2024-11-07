@@ -222,6 +222,19 @@ void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s
 
 }
 
+void RAM::clearMapping(){
+
+    additional_LUTs_needed = 0;
+    physical_ram_id = 0;
+    parallel_RAMs = 0;
+    series_RAMs = 0;
+    BRAM_type = 0;
+    physical_width = 0;
+    physical_depth = 0;
+    ram_area = 0;
+
+}
+
 void RAM::mapLUTRAM(){
 
     long int cur_area;
