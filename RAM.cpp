@@ -76,9 +76,9 @@ vector<long long> RAM::mapBRAMS(int arch){
     }
 
 
-    long long LUTRAM_amount;
-    long long BRAM8K_amount;
-    long long BRAM128K_amount;
+    long long LUTRAM_amount = 0;
+    long long BRAM8K_amount = 0;
+    long long BRAM128K_amount = 0;
 
     switch (BRAM_type){
         case 1:

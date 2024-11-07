@@ -37,7 +37,7 @@ void Circuit::mapBRAMS(int arch){
         LUT_blocks_used += block_count[0];
         BRAM_8K_used += block_count[1];
         BRAM_128K_used += block_count[2];
-        additional_LUTs + block_count[3];
+        additional_LUTs += block_count[3];
     }
 
     calcTotalArea();
@@ -50,7 +50,7 @@ void Circuit::calcTotalArea(){
          << " 8Ks used: " << BRAM_8K_used
          << " 128ks used: " << BRAM_128K_used
          << " Additional LUTs needed: " << additional_LUTs << endl;
-         
+
 
 
 
