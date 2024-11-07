@@ -31,15 +31,35 @@ void Circuit::insertLogicalRAM(int id, string mode, int depth, int width){
 void Circuit::mapBRAMS(int arch){
 
     for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
-        (*i).mapBRAMS(arch);
+        
+        block_count = (*i).mapBRAMS(arch);
+        
+        LUT_blocks_used += block_count[0];
+        BRAM_8K_used += block_count[1];
+        BRAM_128K_used += block_count[2];
+        additional_LUTs + block_count[3];
     }
+
+    calcTotalArea();
 
 }
 
-long long Circuit::calcTotalArea(){
+void Circuit::calcTotalArea(){
+
+    cout << "LUT_blocks_used: " << LUT_blocks_used
+         << " 8Ks used: " << BRAM_8K_used
+         << " 128ks used: " << BRAM_128K_used
+         << " Additional LUTs needed: " << additional_LUTs << endl;
+         
+
+
 
 
     
+}
+
+long long Circuit::getCircuitArea(){
+    return total_FPGA_area;
 }
 
 void Circuit::printCircuitMapping(ofstream& mapping_file){

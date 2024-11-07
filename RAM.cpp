@@ -56,7 +56,7 @@ string RAM::romToString(LogicalRamModes mode){
     return rom_mode;
 }
 
-void RAM::mapBRAMS(int arch){
+vector<int> RAM::mapBRAMS(int arch){
 
     switch (arch) {
         case 1:
@@ -74,6 +74,25 @@ void RAM::mapBRAMS(int arch){
         default:
             break;
     }
+
+
+    long int LUTRAM_amount;
+    long int BRAM8K_amount;
+    long int BRAM128K_amount;
+
+    switch (BRAM_type){
+        case 1:
+            LUTRAM_amount = parallel_RAMs * series_RAMs;
+            break;
+        case 2:
+            BRAM8K_amount = parallel_RAMs * series_RAMs;
+            break;
+        case 3:
+            BRAM128K_amount = parallel_RAMs * series_RAMs;
+            break;
+    }
+    vector<int> blocks_needed = {LUTRAM_amount, BRAM8K_amount, BRAM128K_amount, additional_LUTs_needed};
+    return blocks_needed;
 
 }
 
@@ -367,14 +386,6 @@ void RAM::mapBRAM128K(int arch){
         }
 
     }
-
-}
-
-long int RAM::calcRamArea(int LUTRAM_support, int bits, int max_width){
-
-    //long int logic_block_area;
-    //long int block_RAM_area;
-
 
 }
 

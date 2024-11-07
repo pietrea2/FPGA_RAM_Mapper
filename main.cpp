@@ -25,9 +25,10 @@ int main(int argc, char *argv[]) {
 
     RamMapper mapper;
     mapper.parseBenchmarkCircuits(argv[1], argv[2]);
-    mapper.printAllCircuits();
+    //mapper.printAllCircuits();
     mapper.mapPhysicalRAM(atoi(argv[4]));
     mapper.genMappingFile(argv[3]);
+    cout << mapper.calcGeoAverage() << endl;
 
     return 0;
 

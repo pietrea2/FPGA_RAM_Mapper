@@ -20,12 +20,15 @@ private:
     int num_logic_blocks;
 
 
-    int LUT_blocks_used;
-    int BRAM_8K_used;
-    int BRAM_128K_used;
-    int regular_LBs_used;
-    int required_LBs;
-    long int total_FPGA_area;
+    vector<int> block_count;
+    int LUT_blocks_used = 0;
+    int BRAM_8K_used = 0;
+    int BRAM_128K_used = 0;
+    long int additional_LUTs = 0;
+
+    int regular_LBs_used = 0;
+    int required_LBs = 0;
+    long long total_FPGA_area = 0;
 
 
 public:
@@ -39,7 +42,8 @@ public:
     void insertLogicalRAM(int id, string mode, int depth, int width);
     void mapBRAMS(int arch);
 
-    long long calcTotalArea();
+    void calcTotalArea();
+    long long getCircuitArea();
     
     void printCircuitMapping(ofstream& mapping_file);
     void printCircuit();

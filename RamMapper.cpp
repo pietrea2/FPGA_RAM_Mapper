@@ -65,6 +65,8 @@ void RamMapper::mapPhysicalRAM(int architecture){
         (*i).mapBRAMS(architecture);
     }
 
+    
+
 }
 
 void RamMapper::genMappingFile(char *mapping_file){
@@ -78,6 +80,19 @@ void RamMapper::genMappingFile(char *mapping_file){
     }
 
     mappingFileStream.close();
+}
+
+float RamMapper::calcGeoAverage(){
+
+    long long area = 0;
+    float root = 69.0;
+
+    for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
+        area *= ( (*i).getCircuitArea() / pow(10, 7) );
+    }
+
+    return geo_ave_area = pow( ( area * pow(10, 7) ), 1.0/root);
+
 }
 
 void RamMapper::printAllCircuits(){

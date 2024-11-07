@@ -48,7 +48,7 @@ public:
 
     void setLogicalRAM(int id, string mode, int depth, int width);
     string romToString(LogicalRamModes mode);
-    void mapBRAMS(int arch);
+    vector<int> mapBRAMS(int arch);
     int  calcPhysicalBlocks(int logical_length, int physical_length);
     void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
     void mapLUTRAM();
@@ -56,7 +56,6 @@ public:
     void mapBRAM128K(int arch);
     void mapBRAM(int size, int max_width, int ratio);
 
-    long int calcRamArea(int LUTRAM_support, int bits, int max_width);
 
     void printRamMapping(ofstream& mapping_file);
     void printLogicalRAMs();
