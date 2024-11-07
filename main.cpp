@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
     //mapper.printAllCircuits();
     mapper.mapPhysicalRAM(atoi(argv[4]));
     mapper.genMappingFile(argv[3]);
-    cout << "Geometric Average: " << scientific << mapper.calcGeoAverage() << endl;
+    //cout << "Geometric Average: " << scientific << mapper.calcGeoAverage() << endl;
 
     return 0;
 

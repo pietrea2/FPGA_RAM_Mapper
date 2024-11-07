@@ -96,6 +96,30 @@ vector<long long> RAM::mapBRAMS(int arch){
 
 }
 
+vector<long long> RAM::mapArch2BRAM(int size, int width, int ratio){
+
+    mapBRAM(size, width, ratio);
+
+    long long LUTRAM_amount = 0;
+    long long BRAM8K_amount = 0;
+    long long BRAM128K_amount = 0;
+
+    switch (BRAM_type){
+        case 1:
+            LUTRAM_amount = parallel_RAMs * series_RAMs;
+            break;
+        case 2:
+            BRAM8K_amount = parallel_RAMs * series_RAMs;
+            break;
+        case 3:
+            BRAM128K_amount = parallel_RAMs * series_RAMs;
+            break;
+    }
+    vector<long long> blocks_needed = {LUTRAM_amount, BRAM8K_amount, BRAM128K_amount, additional_LUTs_needed};
+    return blocks_needed;
+
+}
+
 void RAM::mapBRAM(int size, int max_width, int ratio){
 
     //loop through all possible width and depth configuration

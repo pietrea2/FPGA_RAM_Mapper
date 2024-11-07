@@ -19,7 +19,7 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
     logicalCountFile.open(logicalBlockCount);
     if( logicalCountFile.is_open() ){
         getline(logicalCountFile, input);
-        cout << input << endl;
+        //cout << input << endl;
     }
     
     int circ_id;
@@ -41,9 +41,9 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
     if( logicalRamFile.is_open() ){
         //Pass through first 2 lines in file
         getline(logicalRamFile, input);
-        cout << input << endl;
+        //cout << input << endl;
         getline(logicalRamFile, input);
-        cout << input << endl;
+        //cout << input << endl;
     }
     
     int ramID;
@@ -61,9 +61,54 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
 
 void RamMapper::mapPhysicalRAM(int architecture){
 
-    for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-        (*i).mapBRAMS(architecture);
+    if(architecture == 1 ){
+        for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
+            (*i).mapBRAMS(architecture);
+        }
     }
+    else if(architecture == 2){
+
+        //loop for BRAM sizes (1k - 128k)
+        long double best_geo_average = 0.0;
+        int best_width, best_ratio;
+        long double curr_geo_average;
+
+        int base_size = 1024;
+        int max_size = 128;
+        for(int size = 1; size <= max_size; size *= 2){
+
+            //loop for sizes of max_width (8 - 512)
+            for(int width = 8; width <= 512; width *= 2){
+
+                //loop for ratio of LBs to RAM blocks
+                for(int ratio = 10; ratio <= 640; ratio *= 2){
+
+                    //start looping through all circuits
+                    for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
+                        (*i).mapSingleBRAM(size, width, ratio);
+                    }
+
+                    curr_geo_average = calcGeoAverage();
+
+                    //save smallest geo_average
+                    if(best_geo_average == 0.0 || curr_geo_average < best_geo_average){
+                        best_geo_average = curr_geo_average;
+                        best_width = width;
+                        best_ratio = ratio;
+                    }
+                    
+                }
+            }
+
+            //keep track of all geo averages
+            //keep smallest area
+            cout << "BRAM size: " << size << "k " << "Max Width: " << best_width << " LB per RAM: " << best_ratio << " Geo Average Area: " << scientific << best_geo_average << endl;
+            
+
+
+        }
+    }
+    
 
 }
 

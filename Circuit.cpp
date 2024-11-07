@@ -44,6 +44,21 @@ void Circuit::mapBRAMS(int arch){
 
 }
 
+void Circuit::mapSingleBRAM(int size, int width, int ratio){
+
+    for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
+        
+        block_count = (*i).mapArch2BRAM(size, width, ratio);
+        
+        LUT_blocks_used += block_count[0];
+        BRAM_8K_used += block_count[1];
+        BRAM_128K_used += block_count[2];
+        additional_LUTs += block_count[3];
+    }
+
+    calcTotalArea();
+}
+
 void Circuit::calcTotalArea(){
 
     cout << "LUT_blocks_used: " << LUT_blocks_used
