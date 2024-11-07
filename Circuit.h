@@ -20,11 +20,11 @@ private:
     int num_logic_blocks;
 
 
-    vector<int> block_count;
-    int LUT_blocks_used = 0;
-    int BRAM_8K_used = 0;
-    int BRAM_128K_used = 0;
-    long int additional_LUTs = 0;
+    vector<long long> block_count;
+    long long LUT_blocks_used = 0;
+    long long BRAM_8K_used = 0;
+    long long BRAM_128K_used = 0;
+    long long additional_LUTs = 0;
 
     int regular_LBs_used = 0;
     int required_LBs = 0;
