@@ -30,7 +30,7 @@ private:
 
     int regular_LBs_used = 0;
     int required_LBs = 0;
-    long long total_FPGA_area = 0;
+    long double total_FPGA_area = 0.0;
 
 
 public:
@@ -45,7 +45,7 @@ public:
     void mapBRAMS(int arch);
 
     void calcTotalArea();
-    long long getCircuitArea();
+    long double getCircuitArea();
     long long calcRamArea(int size, int max_width);
     
     void printCircuitMapping(ofstream& mapping_file);

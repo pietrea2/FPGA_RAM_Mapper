@@ -19,7 +19,7 @@ private:
     //vector of circuits
     vector<Circuit> circuit_array;
     //vector<long long> circuit_areas;
-    float geo_ave_area;
+    long double geo_ave_area;
 
 public:
 
@@ -30,7 +30,7 @@ public:
     void mapPhysicalRAM(int architecture);
     void genMappingFile(char *mapping_file);
 
-    float calcGeoAverage();
+    long double calcGeoAverage();
 
     void printAllCircuits();
 

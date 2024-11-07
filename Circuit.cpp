@@ -49,7 +49,7 @@ void Circuit::calcTotalArea(){
     cout << "LUT_blocks_used: " << LUT_blocks_used
          << " 8Ks used: " << BRAM_8K_used
          << " 128ks used: " << BRAM_128K_used
-         << " Additional LUTs needed: " << additional_LUTs << endl;
+         << " Additional LUTs needed: " << additional_LUTs;
 
     int LUTRAM_ratio = 1;
     int BRAM_8K_ratio = 10;
@@ -58,7 +58,7 @@ void Circuit::calcTotalArea(){
     long long LUT_logic_blocks = LUT_blocks_used * LUTRAM_ratio;
     long long BRAM_8K_logic_blocks = BRAM_8K_used * BRAM_8K_ratio;
     long long BRAM_128K_logic_blocks = BRAM_128K_used * BRAM_128K_ratio;
-    long long total_logic_blocks_required = additional_LUTs + num_logic_blocks;
+    long long total_logic_blocks_required = additional_LUTs + num_logic_blocks + LUT_logic_blocks;
 
     vector<long long> logic_blocks = {LUT_logic_blocks, BRAM_8K_logic_blocks, BRAM_128K_logic_blocks, total_logic_blocks_required};
     long long limiting_factor = *max_element(logic_blocks.begin(), logic_blocks.end());
@@ -69,15 +69,20 @@ void Circuit::calcTotalArea(){
     long long area_LBs = limiting_factor * ( (LUT_logic_blocks != 0) ? 37500 : 35000 );
     long long are_8K = num_8K_BRAMs * calcRamArea(8192, 32);
     long long are_128K = num_128K_BRAMs * calcRamArea(131072, 128);
-
-    total_FPGA_area = area_LBs + are_8K + are_128K;
-
-    cout << "Circuit " << circuit_id << " area: " << scientific << total_FPGA_area << defaultfloat << endl;
+    
+    long double area = area_LBs + are_8K + are_128K;
+    total_FPGA_area = area;
+    
+    
+    cout << " Tiles: " << limiting_factor << " ";
+    cout << "Circuit " << circuit_id << " area: " << scientific;
+    cout << area;
+    cout << defaultfloat << endl;
 
     
 }
 
-long long Circuit::getCircuitArea(){
+long double Circuit::getCircuitArea(){
     return total_FPGA_area;
 }
 

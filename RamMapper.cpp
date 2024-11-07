@@ -80,16 +80,17 @@ void RamMapper::genMappingFile(char *mapping_file){
     mappingFileStream.close();
 }
 
-float RamMapper::calcGeoAverage(){
+long double RamMapper::calcGeoAverage(){
 
-    long long area = 0;
-    float root = 69.0;
+    long double area = 1.0;
+    long double root = 69.0;
 
     for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-        area *= ( (*i).getCircuitArea() / pow(10, 7) );
+        area *= ( (*i).getCircuitArea() / pow(10.0, 7) );
     }
 
-    geo_ave_area = pow( ( area * pow(10, 7) ), 1.0/root);
+    geo_ave_area = pow( area, 1.0/root);
+    geo_ave_area *= pow(10.0, 7);
     return geo_ave_area;
 
 }
