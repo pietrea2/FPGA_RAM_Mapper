@@ -172,10 +172,7 @@ void RAM::mapBRAM(int size, int max_width, int ratio){
 
                 extra_LUTs = decoders + muxes;
                 if(logical_ram_mode == LogicalRamModes::TrueDualPort) extra_LUTs = extra_LUTs * 2;
-                //extra_LUTs = extra_LUTs * logical_ram_depth;
-                //extra_LUTs = 1 * (((logical_ram_mode == ROM) ? 0 : decoders) + muxes) * ((logical_ram_mode == TrueDualPort) ? 2 : 1);
                 
-
                 extra_logic_blocks = extra_LUTs / 10;
                 if(extra_LUTs % 10) extra_logic_blocks += 1;
 

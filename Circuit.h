@@ -47,6 +47,7 @@ public:
     void clearMapping();
 
     void calcTotalArea();
+    void calcTotalArea2(int size, int width, int ratio);
     long double getCircuitArea();
     long long calcRamArea(int size, int max_width);
     

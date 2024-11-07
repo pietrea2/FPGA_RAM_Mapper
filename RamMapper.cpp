@@ -78,14 +78,14 @@ void RamMapper::mapPhysicalRAM(int architecture){
         for(int size = 1; size <= max_size; size *= 2){
 
             //loop for sizes of max_width (8 - 512)
-            for(int width = 8; width <= 512; width *= 2){
+            for(int width = 2; width <= 512; width *= 2){
 
                 //loop for ratio of LBs to RAM blocks
-                for(int ratio = 10; ratio <= 640; ratio *= 2){
+                for(int ratio = 1; ratio <= 100; ratio++){
 
                     //start looping through all circuits
                     for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-                        (*i).mapSingleBRAM(size, width, ratio);
+                        (*i).mapSingleBRAM(size*base_size, width, ratio);
                     }
 
                     curr_geo_average = calcGeoAverage();

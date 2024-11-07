@@ -56,7 +56,7 @@ void Circuit::mapSingleBRAM(int size, int width, int ratio){
         additional_LUTs += block_count[3];
     }
 
-    calcTotalArea();
+    calcTotalArea2(size, width, ratio);
 }
 
 void Circuit::clearMapping(){
@@ -105,6 +105,37 @@ void Circuit::calcTotalArea(){
     long long are_128K = num_128K_BRAMs * calcRamArea(131072, 128);
     
     long double area = area_LBs + are_8K + are_128K;
+    total_FPGA_area = area;
+    
+    /*
+    cout << " Tiles: " << limiting_factor << " ";
+    cout << "Circuit " << circuit_id << " area: " << scientific;
+    cout << area;
+    cout << defaultfloat << endl;
+    */
+    
+}
+
+void Circuit::calcTotalArea2(int size, int width, int ratio){
+
+    /*
+    cout << "LUT_blocks_used: " << LUT_blocks_used
+         << " 8Ks used: " << BRAM_8K_used
+         << " 128ks used: " << BRAM_128K_used
+         << " Additional LUTs needed: " << additional_LUTs;
+    */
+    long long BRAM_logic_blocks = LUT_blocks_used * ratio;
+    long long total_logic_blocks_required = additional_LUTs + num_logic_blocks;
+
+    vector<long long> logic_blocks = {BRAM_logic_blocks, total_logic_blocks_required};
+    long long limiting_factor = *max_element(logic_blocks.begin(), logic_blocks.end());
+
+    int num_BRAMs = limiting_factor / ratio;
+
+    long long area_LBs = limiting_factor * 35000;
+    long long area_BRAM = num_BRAMs * calcRamArea(size, width);
+    
+    long double area = area_LBs + area_BRAM;
     total_FPGA_area = area;
     
     /*
