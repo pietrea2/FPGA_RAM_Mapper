@@ -9,6 +9,8 @@
 
 #include "RAM.h"
 #include <vector>
+#include <bits/stdc++.h>
+#include <cmath>
 
 using namespace std;
 
@@ -44,6 +46,7 @@ public:
 
     void calcTotalArea();
     long long getCircuitArea();
+    long long calcRamArea(int size, int max_width);
     
     void printCircuitMapping(ofstream& mapping_file);
     void printCircuit();
