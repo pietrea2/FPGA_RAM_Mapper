@@ -60,7 +60,7 @@ vector<long long> RAM::mapBRAMS(int arch){
 
     switch (arch) {
         case 1:
-            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapLUTRAM();
+            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapLUTRAM(); //mapBRAM2(LUTRAM, );
             mapBRAM8K(arch);
             mapBRAM128K(arch);
             break;
@@ -92,6 +92,52 @@ vector<long long> RAM::mapBRAMS(int arch){
             break;
     }
     vector<long long> blocks_needed = {LUTRAM_amount, BRAM8K_amount, BRAM128K_amount, additional_LUTs_needed};
+    return blocks_needed;
+
+}
+
+vector<long long> RAM::mapBRAMS2(int arch, int size, int width, int ratio){
+
+    switch (arch) {
+        case 1:
+            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM2(LUTRAM, 640, 20, 1);
+            mapBRAM2(BRAM8K, 8192, 32, 10);
+            mapBRAM2(BRAM128K, 131072, 128, 300);
+            break;
+        case 2:
+            mapBRAM2(BRAM_NOLUT, size, width, ratio);
+            break;
+        case 3:
+            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM2(LUTRAM, 640, 20, 1);
+            mapBRAM2(BRAM_WITHLUT, size, width, ratio);
+            break;
+        default:
+            break;
+    }
+
+    long long LUTRAM_amount = 0;
+    long long BRAM8K_amount = 0;
+    long long BRAM128K_amount = 0;
+    long long BRAM_amount = 0;
+
+    switch (BRAM_type){
+        case 1:
+            LUTRAM_amount = parallel_RAMs * series_RAMs;
+            break;
+        case 2:
+            BRAM8K_amount = parallel_RAMs * series_RAMs;
+            break;
+        case 3:
+            BRAM128K_amount = parallel_RAMs * series_RAMs;
+            break;
+        case 4:
+            BRAM_amount = parallel_RAMs * series_RAMs;
+            break;
+        case 5:
+            BRAM_amount = parallel_RAMs * series_RAMs;
+            break;
+    }
+    vector<long long> blocks_needed = {LUTRAM_amount, BRAM8K_amount, BRAM128K_amount, BRAM_amount, additional_LUTs_needed};
     return blocks_needed;
 
 }
@@ -197,6 +243,88 @@ void RAM::mapBRAM(int size, int max_width, int ratio){
 
 }
 
+void RAM::mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio){
+
+    //loop through all possible width and depth configuration
+    //calc max_width available for this logical RAM type
+    if(logical_ram_mode == LogicalRamModes::TrueDualPort) max_width = max_width / 2;
+    
+    int bram_size = size;
+    long int bram_area;
+
+    if(bram_type == LUTRAM){
+        bram_area = 40000;
+    }
+    else{
+        bram_area = 9000 + 5*bram_size + 90*sqrt(bram_size) + 1200*max_width;
+    }
+
+    //variables needed to keep track of mapping
+    long int cur_area;
+    int depth;
+    int S = 1;
+    int P;
+    long int muxes = 0;
+    int mux_count;
+    int decoders = 0;
+    long int extra_LUTs = 0;
+    int extra_logic_blocks = 0;
+    int invalid_mapping = 0;
+
+    //loop through all possible width and depth configuration
+    for(int width = 1; width <= max_width; width = width * 2 ){
+        depth = bram_size / width;
+
+        //if need to increase depth of RAM, put blocks in Series
+        if(logical_ram_depth > depth){
+
+            //Calc how many blocks in Series (S)
+            S = calcPhysicalBlocks(logical_ram_depth, depth);
+
+            //only map if 16 or less blocks in series needed
+            if(S <= 16){
+
+                //Calc extra logic needed due to Series blocks
+                if(S > 2) decoders = S;
+                else decoders = 1;
+                
+                //calculating total muxes needed (extra)
+                mux_count = logical_ram_width;
+                int num_luts;
+                int b;
+                for(int row = mux_count; row >=1; row--){
+                    num_luts = (S + 5)/6;
+                    b = num_luts*(num_luts+1)/2;
+                    muxes += row  *  (b*(b+1)/2);
+                }
+
+                extra_LUTs = decoders + muxes;
+                if(logical_ram_mode == LogicalRamModes::TrueDualPort) extra_LUTs = extra_LUTs * 2;
+                
+                extra_logic_blocks = extra_LUTs / 10;
+                if(extra_LUTs % 10) extra_logic_blocks += 1;
+
+            }
+            else{
+                invalid_mapping = 1;
+                continue;
+            }
+        }
+
+        //Calc how many blocks in Parallel (P)
+        P = calcPhysicalBlocks(logical_ram_width, width);
+        
+        //Calc area, set to best area (if smallest so far)
+        cur_area = S * P * bram_area + extra_logic_blocks * 35000;
+
+        if( (ram_area == 0 || cur_area < ram_area) && !invalid_mapping ){
+            saveRamMapping(extra_LUTs, logical_ram_id, P, S, bram_type, width, depth, cur_area);
+        }
+
+    }
+
+}
+
 int RAM::calcPhysicalBlocks(int logical_length, int physical_length){
 
     int num_blocks_needed = logical_length / physical_length;
@@ -212,7 +340,9 @@ void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s
     physical_ram_id = phys_ram_id;
     parallel_RAMs = p;
     series_RAMs = s;
+
     BRAM_type = ram_type;
+
     physical_width = phys_width;
     physical_depth = phys_depth;
     ram_area = area;
@@ -225,7 +355,7 @@ void RAM::clearMapping(){
     physical_ram_id = 0;
     parallel_RAMs = 0;
     series_RAMs = 0;
-    BRAM_type = 0;
+    BRAM_type = LUTRAM;
     physical_width = 0;
     physical_depth = 0;
     ram_area = 0;
@@ -425,6 +555,25 @@ void RAM::mapBRAM128K(int arch){
 
 void RAM::printRamMapping(ofstream& mapping_file){
 
+    int bram_type;
+    switch(BRAM_type){
+        case LUTRAM:
+            bram_type = 1;
+            break;
+        case BRAM8K:
+            bram_type = 2;
+            break;
+        case BRAM128K:
+            bram_type = 3;
+            break;
+        case BRAM_NOLUT:
+            bram_type = 1;
+            break;
+        case BRAM_WITHLUT:
+            bram_type = 2;
+            break;
+    }
+
     mapping_file << logical_ram_id << " "
                  << additional_LUTs_needed << " "
                  << "LW " << logical_ram_width << " "
@@ -432,7 +581,7 @@ void RAM::printRamMapping(ofstream& mapping_file){
                  << "ID " << physical_ram_id << " "
                  << "S "  << series_RAMs << " "
                  << "P "  << parallel_RAMs << " "
-                 << "Type " << BRAM_type << " "
+                 << "Type " << bram_type << " "
                  << "Mode " << romToString(logical_ram_mode) << " "
                  << "W "  << physical_width << " "
                  << "D "  << physical_depth << endl;

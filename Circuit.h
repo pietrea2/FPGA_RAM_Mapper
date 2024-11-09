@@ -26,6 +26,7 @@ private:
     long long LUT_blocks_used = 0;
     long long BRAM_8K_used = 0;
     long long BRAM_128K_used = 0;
+    long long BRAM_used = 0;
     long long additional_LUTs = 0;
 
     int regular_LBs_used = 0;
@@ -43,11 +44,13 @@ public:
     void setLogicBlocks(int amount);
     void insertLogicalRAM(int id, string mode, int depth, int width);
     void mapBRAMS(int arch);
+    void mapBRAMS2(int arch, int size, int width, int ratio);
     void mapSingleBRAM(int size, int width, int ratio);
     void clearMapping();
 
     void calcTotalArea();
     void calcTotalArea2(int size, int width, int ratio);
+    void calcTotalArea3(int arch, int size, int width, int ratio);
     long double getCircuitArea();
     long long calcRamArea(int size, int max_width);
     

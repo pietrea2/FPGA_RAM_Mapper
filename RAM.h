@@ -16,7 +16,7 @@ using namespace std;
 class RAM{
 
     enum LogicalRamModes { ROM, SinglePort, SimpleDualPort, TrueDualPort };
-    enum BRAMs { LUTRAM=1, BRAM8K, BRAM128K };
+    enum BRAMs { LUTRAM=1, BRAM8K, BRAM128K, BRAM_NOLUT, BRAM_WITHLUT };
 
 private:
 
@@ -27,7 +27,7 @@ private:
     int logical_ram_width;
 
     //physical RAM data members (BRAM)
-    int BRAM_type;
+    BRAMs BRAM_type;
     long int additional_LUTs_needed;
     int physical_ram_id;
     int parallel_RAMs;
@@ -49,6 +49,7 @@ public:
     void setLogicalRAM(int id, string mode, int depth, int width);
     string romToString(LogicalRamModes mode);
     vector<long long> mapBRAMS(int arch);
+    vector<long long> mapBRAMS2(int arch, int size, int width, int ratio);
     vector<long long> mapArch2BRAM(int size, int width, int ratio);
     int  calcPhysicalBlocks(int logical_length, int physical_length);
     void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
@@ -57,6 +58,7 @@ public:
     void mapBRAM8K(int arch);
     void mapBRAM128K(int arch);
     void mapBRAM(int size, int max_width, int ratio);
+    void mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio);
 
 
     void printRamMapping(ofstream& mapping_file);

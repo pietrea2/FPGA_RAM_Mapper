@@ -66,7 +66,7 @@ void RamMapper::mapPhysicalRAM(int architecture){
             (*i).mapBRAMS(architecture);
         }
     }
-    else if(architecture == 2){
+    else if(architecture == 2 || architecture == 3){
 
         //loop for BRAM sizes (1k - 128k)
         long double best_geo_average;
@@ -87,7 +87,7 @@ void RamMapper::mapPhysicalRAM(int architecture){
 
                     //start looping through all circuits
                     for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-                        (*i).mapSingleBRAM(size*base_size, width, ratio);
+                        (*i).mapBRAMS2(architecture, size*base_size, width, ratio);
                     }
 
                     curr_geo_average = calcGeoAverage();
@@ -111,10 +111,11 @@ void RamMapper::mapPhysicalRAM(int architecture){
             //keep smallest area
             cout << "BRAM size: " << size << "k " << "Max Width: " << best_width << " LB per RAM: " << best_ratio << " Geo Average Area: " << scientific << best_geo_average << endl;
             
-
-
         }
     }
+
+
+
     
 
 }
