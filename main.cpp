@@ -15,18 +15,23 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     //to run the mapper and generate a mapping file, run command:
-    //  ./RAM_mapper logical_rams.txt logic_block_count.txt mapping.txt <Map Arch>
+    //  ./RAM_mapper logical_rams.txt logic_block_count.txt mapping.txt <Map Arch> <gen table>
     //
     //Specify <Map Arch> as int for desired architecture:
     //      1 -> Stratix-IV-Like Arch
     //      2 -> No LUTRAM, 1 type of BRAM
     //      3 -> LUTRAM and 1 type of BRAM
     //      4 -> Custom Arch
+    //Specify <gen table> if you want the RamMapper to run and generate Table 2 or 3 (experimenting with BRAM size)
+    //      table -> generate Table 2 or 3
+    int gen_table;
+    if(argc == 6) gen_table = 1;
+    else gen_table = 0;
 
     RamMapper mapper;
     mapper.parseBenchmarkCircuits(argv[1], argv[2]);
     //mapper.printAllCircuits();
-    mapper.mapPhysicalRAM(atoi(argv[4]));
+    mapper.mapPhysicalRAM(atoi(argv[4]), gen_table);
     mapper.genMappingFile(argv[3]);
     //cout << "Geometric Average: " << scientific << mapper.calcGeoAverage() << endl;
 

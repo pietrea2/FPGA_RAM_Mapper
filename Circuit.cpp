@@ -82,6 +82,7 @@ void Circuit::clearMapping(){
     LUT_blocks_used = 0;
     BRAM_8K_used = 0;
     BRAM_128K_used = 0;
+    BRAM_used = 0;
     additional_LUTs = 0;
 
     regular_LBs_used = 0;

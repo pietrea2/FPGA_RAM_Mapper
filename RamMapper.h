@@ -27,7 +27,7 @@ public:
     RamMapper();
     ~RamMapper();
     void parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBlockCount);
-    void mapPhysicalRAM(int architecture);
+    void mapPhysicalRAM(int architecture, int generate_table);
     void genMappingFile(char *mapping_file);
 
     long double calcGeoAverage();
