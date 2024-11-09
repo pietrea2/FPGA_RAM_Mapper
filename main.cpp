@@ -20,18 +20,36 @@ int main(int argc, char *argv[]) {
     //Specify <Map Arch> as int for desired architecture:
     //      1 -> Stratix-IV-Like Arch
     //      2 -> No LUTRAM, 1 type of BRAM
+    //          a) Can add following arguments if you want to specify BRAM: <size> <max_width> <ratio>
     //      3 -> LUTRAM and 1 type of BRAM
     //      4 -> Custom Arch
+
     //Specify <gen table> if you want the RamMapper to run and generate Table 2 or 3 (experimenting with BRAM size)
     //      table -> generate Table 2 or 3
+    int size, max_width, ratio;
     int gen_table;
-    if(argc == 6) gen_table = 1;
-    else gen_table = 0;
+
+    if(argc == 8){
+        size = atoi(argv[5]);
+        max_width = atoi(argv[6]);
+        ratio = atoi(argv[7]);
+        gen_table = 0;
+    }
+    else if(argc == 6){
+        gen_table = 1;
+    }
+    else{
+        size = 0;
+        max_width = 0;
+        ratio = 0;
+        gen_table = 0;
+    }
+
 
     RamMapper mapper;
     mapper.parseBenchmarkCircuits(argv[1], argv[2]);
     //mapper.printAllCircuits();
-    mapper.mapPhysicalRAM(atoi(argv[4]), gen_table);
+    mapper.mapPhysicalRAM(atoi(argv[4]), size, max_width, ratio, gen_table);
     mapper.genMappingFile(argv[3]);
     //cout << "Geometric Average: " << scientific << mapper.calcGeoAverage() << endl;
 

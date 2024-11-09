@@ -59,7 +59,7 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
 
 }
 
-void RamMapper::mapPhysicalRAM(int architecture, int generate_table){
+void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, int bram_ratio, int generate_table){
 
     if(architecture == 1 ){
         for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
@@ -70,13 +70,9 @@ void RamMapper::mapPhysicalRAM(int architecture, int generate_table){
 
         if(generate_table == 0){
 
-            int bram_size = 1024 * 1;
-            int bram_width = 16;
-            int bram_ratio = 5;
-
             //start looping through all circuits
             for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-                (*i).mapBRAMS2(architecture, bram_size, bram_width, bram_ratio);
+                (*i).mapBRAMS2(architecture, bram_size, max_width, bram_ratio);
             }
 
         }
