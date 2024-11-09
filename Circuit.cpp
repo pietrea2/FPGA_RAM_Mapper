@@ -103,11 +103,14 @@ void Circuit::calcTotalArea3(int arch, int size, int width, int ratio){
         int LUTRAM_ratio = 1;
         int BRAM_8K_ratio = 10;
         int BRAM_128K_ratio = 300;
+        
+        long long extra_logic_blocks = additional_LUTs / 10;
+        if(additional_LUTs % 10) extra_logic_blocks += 1;
 
         long long LUT_logic_blocks = LUT_blocks_used * LUTRAM_ratio;
         long long BRAM_8K_logic_blocks = BRAM_8K_used * BRAM_8K_ratio;
         long long BRAM_128K_logic_blocks = BRAM_128K_used * BRAM_128K_ratio;
-        long long total_logic_blocks_required = additional_LUTs + num_logic_blocks + LUT_logic_blocks;
+        long long total_logic_blocks_required = extra_logic_blocks + num_logic_blocks + LUT_logic_blocks;
 
         vector<long long> logic_blocks = {LUT_logic_blocks, BRAM_8K_logic_blocks, BRAM_128K_logic_blocks, total_logic_blocks_required};
         long long limiting_factor = *max_element(logic_blocks.begin(), logic_blocks.end());
@@ -125,8 +128,11 @@ void Circuit::calcTotalArea3(int arch, int size, int width, int ratio){
     }
     else if(arch == 2){
 
+        long long extra_logic_blocks = additional_LUTs / 10;
+        if(additional_LUTs % 10) extra_logic_blocks += 1;
+        
         long long BRAM_logic_blocks = BRAM_used * ratio;
-        long long total_logic_blocks_required = additional_LUTs + num_logic_blocks;
+        long long total_logic_blocks_required = extra_logic_blocks + num_logic_blocks;
 
         vector<long long> logic_blocks = {BRAM_logic_blocks, total_logic_blocks_required};
         long long limiting_factor = *max_element(logic_blocks.begin(), logic_blocks.end());
@@ -143,10 +149,13 @@ void Circuit::calcTotalArea3(int arch, int size, int width, int ratio){
     else if(arch == 3){
 
         int LUTRAM_ratio = 1;
-
+        
+        long long extra_logic_blocks = additional_LUTs / 10;
+        if(additional_LUTs % 10) extra_logic_blocks += 1;
+        
         long long LUT_logic_blocks = LUT_blocks_used * LUTRAM_ratio;
         long long BRAM_logic_blocks = BRAM_used * ratio;
-        long long total_logic_blocks_required = additional_LUTs + num_logic_blocks + LUT_logic_blocks;
+        long long total_logic_blocks_required = extra_logic_blocks + num_logic_blocks + LUT_logic_blocks;
 
         vector<long long> logic_blocks = {LUT_logic_blocks, BRAM_logic_blocks, total_logic_blocks_required};
         long long limiting_factor = *max_element(logic_blocks.begin(), logic_blocks.end());
