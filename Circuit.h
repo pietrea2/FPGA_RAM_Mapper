@@ -45,7 +45,7 @@ public:
     void insertLogicalRAM(int id, string mode, int depth, int width);
 
     void mapBRAMS2(int arch, int size, int width, int ratio);
-    void Circuit::mapBRAMS3(int arch, int size, int width, int ratio);
+    void mapBRAMS3(int arch, int size, int width, int ratio);
     void clearMapping();
 
     void calcTotalArea3(int arch, int size, int width, int ratio);

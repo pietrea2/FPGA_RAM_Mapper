@@ -211,7 +211,7 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
                 else decoders = 1;
                 
                 //calculating total muxes needed (extra)
-                if(bram_type == LUTRAM){
+                if(0){
                     muxes = logical_ram_width;
                 }
                 else{
@@ -245,19 +245,19 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
         cur_additional_LUT_amount = extra_LUTs;
         switch (bram_type){
         case 1:
-            cur_LUTRAM_amount = parallel_RAMs * series_RAMs;
+            cur_LUTRAM_amount = P * S;
             break;
         case 2:
-            cur_BRAM8K_amount = parallel_RAMs * series_RAMs;
+            cur_BRAM8K_amount = P * S;
             break;
         case 3:
-            cur_BRAM128K_amount = parallel_RAMs * series_RAMs;
+            cur_BRAM128K_amount = P * S;
             break;
         case 4:
-            cur_BRAM_amount = parallel_RAMs * series_RAMs;
+            cur_BRAM_amount = P * S;
             break;
         case 5:
-            cur_BRAM_amount = parallel_RAMs * series_RAMs;
+            cur_BRAM_amount = P * S;
             break;
         }
 
@@ -268,7 +268,7 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
                                                                cur_additional_LUT_amount + additional_LUTs,
                                                                num_logic_blocks);
 
-        if( (ram_area == 0 || cur_area < ram_area) && !invalid_mapping ){
+        if( (ram_area == 0 || cur_area <= ram_area) && !invalid_mapping ){
             saveRamMapping(extra_LUTs, logical_ram_id, P, S, bram_type, width, depth, cur_area);
 
         }
