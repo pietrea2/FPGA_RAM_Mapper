@@ -110,12 +110,15 @@ void RAM::mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio){
     
     int bram_size = size;
     long int bram_area;
+    int min_width;
 
     if(bram_type == LUTRAM){
         bram_area = 40000;
+        min_width = 10;
     }
     else{
         bram_area = 9000 + 5*bram_size + 90*sqrt(bram_size) + 1200*max_width;
+        min_width = 1;
     }
 
     //variables needed to keep track of mapping
@@ -131,7 +134,7 @@ void RAM::mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio){
     int invalid_mapping = 0;
 
     //loop through all possible width and depth configuration
-    for(int width = 1; width <= max_width; width = width * 2 ){
+    for(int width = min_width; width <= max_width; width = width * 2 ){
         depth = bram_size / width;
 
         //if need to increase depth of RAM, put blocks in Series
