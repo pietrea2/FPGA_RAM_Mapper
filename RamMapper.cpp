@@ -1,18 +1,6 @@
 #include "RamMapper.h"
 
 using namespace std;
-//using namespace std::chrono;
-
-// A variable that holds the number of CPU clock cycles per second
-uint64_t clocks_per_sec;
-/*********************************************************************************************
- * This function reads the time stamp using inline assembly code to measure code runtime.    *
- *********************************************************************************************/
-inline uint64_t rdtsc(){
-	uint32_t lo, hi;
-	__asm__ volatile (".byte 0x0f, 0x31" : "=a" (lo), "=d" (hi));
-	return (uint64_t)(((uint64_t)hi)<<32LL) | (uint64_t) lo;
-}
 
 void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBlockCount){
 
@@ -64,33 +52,18 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
 
 void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, int bram_ratio, int generate_table){
 
-    /*
-    // Get the number of CPU cycles per second
-	uint64_t start_clk = rdtsc();
-	usleep(1000000);
-	uint64_t end_clk = rdtsc();
-	clocks_per_sec = (end_clk - start_clk); 
-     */  
-    
     if(architecture == 1 ){
 
-        //auto start = std::chrono::high_resolution_clock::now();
         clock_t start = clock();
-        //start_clk = rdtsc();
         for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
             (*i).mapBRAMS2(architecture, 0, 0, 0);
         }
-        //auto stop = std::chrono::high_resolution_clock::now();
         clock_t finish = clock();
-        //end_clk = rdtsc();
         
         geo_ave_area = calcGeoAverage();
-        //auto runtime = std::chrono::duration_cast<std::chrono::seconds>(stop - start);
             
         cout << "Geo Average Area: " << scientific << geo_ave_area << endl;
-        //cout << "CPU Runtime: " << scientific << runtime.count() << endl;
         cout << "CPU Runtime: " << scientific <<  (double)(finish - start)/CLOCKS_PER_SEC << endl;
-        //cout << "CPU Runtime: " << scientific << 1000.0 * (end_clk-start_clk) / clocks_per_sec << endl;
         
     }
     else if(architecture == 2 || architecture == 3){
@@ -98,19 +71,15 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
         if(generate_table == 0){
 
             //start looping through all circuits
-            //auto start = high_resolution_clock::now();
             clock_t start = clock();
             for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
                 (*i).mapBRAMS2(architecture, bram_size, max_width, bram_ratio);
             }
             clock_t finish = clock();
-            //auto stop = high_resolution_clock::now();
             
             geo_ave_area = calcGeoAverage();
-            //auto runtime = duration_cast<seconds>(stop - start);
             
             cout << "BRAM size: " << bram_size << "k " << "Max Width: " << max_width << " LB per RAM: " << bram_ratio << " Geo Average Area: " << scientific << geo_ave_area << endl;
-            //cout << "CPU Runtime: " << runtime.count() << endl;
             cout << "CPU Runtime: " << scientific <<  (double)(finish - start)/CLOCKS_PER_SEC << endl;
 
         }

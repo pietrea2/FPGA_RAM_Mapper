@@ -30,6 +30,7 @@ void Circuit::insertLogicalRAM(int id, string mode, int depth, int width){
 
 void Circuit::mapBRAMS2(int arch, int size, int width, int ratio){
 
+    //ram by smallest individual ram area
     for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
         
         block_count = (*i).mapBRAMS2(arch, size, width, ratio);
@@ -42,6 +43,26 @@ void Circuit::mapBRAMS2(int arch, int size, int width, int ratio){
     }
 
     calcTotalArea3(arch, size, width, ratio);
+
+
+}
+
+void Circuit::mapBRAMS3(int arch, int size, int width, int ratio){
+
+    //ram by smallest individual ram area
+    for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
+        
+        block_count = (*i).mapBRAMS3(arch, size, width, ratio, LUT_blocks_used, BRAM_8K_used, BRAM_128K_used, BRAM_used, additional_LUTs, num_logic_blocks);
+        
+        LUT_blocks_used += block_count[0];
+        BRAM_8K_used += block_count[1];
+        BRAM_128K_used += block_count[2];
+        BRAM_used += block_count[3];
+        additional_LUTs += block_count[4];
+    }
+
+    calcTotalArea3(arch, size, width, ratio);
+
 
 }
 

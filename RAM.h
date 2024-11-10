@@ -8,6 +8,7 @@
 #include <cstdlib>
 
 #include <vector>
+#include <bits/stdc++.h>
 #include <string>
 #include <cmath>
 
@@ -36,6 +37,14 @@ private:
     int physical_depth;
     long int ram_area = 0;
 
+    //variables to keep track of smallest global board area
+    long long LUT_blocks = 0;
+    long long BRAM_8K = 0;
+    long long BRAM_128K = 0;
+    long long BRAM = 0;
+    long long additional_LUTs = 0;
+    long double total_FPGA_area = 0.0;
+
 
 public:
     //init and del functions
@@ -45,12 +54,14 @@ public:
     void setLogicalRAM(int id, string mode, int depth, int width);
     string romToString(LogicalRamModes mode);
     vector<long long> mapBRAMS2(int arch, int size, int width, int ratio);
+    vector<long long> mapBRAMS3(int arch, int size, int width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks);
     int  calcPhysicalBlocks(int logical_length, int physical_length);
     void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
     void clearMapping();
     void mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio);
-    void mapLUTRAM();
-
+    void mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks);
+    long double calcFPGAArea(int arch, int size, int width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks);
+    long long calcRamArea(int size, int max_width);
     void printRamMapping(ofstream& mapping_file);
     void printLogicalRAMs();
 

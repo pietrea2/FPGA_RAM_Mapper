@@ -11,16 +11,13 @@
 #include <vector>
 #include <string>
 #include <cmath>
-#include <chrono>
 
-//using namespace std::chrono;
 using namespace std;
 
 class RamMapper{
 private:
     //vector of circuits
     vector<Circuit> circuit_array;
-    //vector<long long> circuit_areas;
     long double geo_ave_area;
 
 public:
