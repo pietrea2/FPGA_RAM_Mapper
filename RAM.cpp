@@ -60,7 +60,7 @@ vector<long long> RAM::mapBRAMS2(int arch, int size, int width, int ratio){
 
     switch (arch) {
         case 1:
-            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM2(LUTRAM, 640, 20, 1);
+            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapLUTRAM();//mapBRAM2(LUTRAM, 640, 20, 1);
             mapBRAM2(BRAM8K, 8192, 32, 10);
             mapBRAM2(BRAM128K, 131072, 128, 300);
             break;
@@ -99,6 +99,67 @@ vector<long long> RAM::mapBRAMS2(int arch, int size, int width, int ratio){
     }
     vector<long long> blocks_needed = {LUTRAM_amount, BRAM8K_amount, BRAM128K_amount, BRAM_amount, additional_LUTs_needed};
     return blocks_needed;
+
+}
+
+void RAM::mapLUTRAM(){
+
+    long int cur_area;
+    int S = 1;
+    int P;
+    int muxes = 0;
+    int decoders = 0;
+    int extra_LUTs = 0;
+    int extra_logic_blocks = 0;
+    int invalid_mapping = 0;
+
+    //try both modes: 10bit wide and 20bit wide words
+    int phys_depth = 64;
+    int phys_width = 10;
+
+    //loop for 64x 10-bit words and 32x 20-bit words
+    for(int i = 0; i < 2; i++ ){
+
+        //if need to increase depth of RAM, put blocks in Series
+        if(logical_ram_depth > phys_depth){
+
+            //Calc how many blocks in Series (S)
+            S = calcPhysicalBlocks(logical_ram_depth, phys_depth);
+
+            //only map if 16 or less blocks in series needed
+            if(S <= 16){
+
+                //Calc extra logic needed due to Series blocks
+                if(S > 2) decoders = S;
+                else decoders = 1;
+                muxes = logical_ram_width;
+
+                extra_LUTs = decoders + muxes;
+                if(logical_ram_mode == LogicalRamModes::TrueDualPort) extra_LUTs = extra_LUTs * 2;
+
+                extra_logic_blocks = extra_LUTs / 10;
+                if(extra_LUTs % 10) extra_logic_blocks += 1;
+            }
+            else{
+                invalid_mapping = 1;
+                continue;
+            }
+        }
+
+        //Calc how many blocks in Parallel (P)
+        P = calcPhysicalBlocks(logical_ram_width, phys_width);
+
+
+        //Calc area, set to best area (if smallest so far)
+        cur_area = S * P * 40000 + extra_logic_blocks * 35000;
+        if( (ram_area == 0 || cur_area < ram_area) && !invalid_mapping ){
+            saveRamMapping(extra_LUTs, logical_ram_id, P, S, BRAMs::LUTRAM, phys_width, phys_depth, cur_area);
+        }
+
+        //loop again trying these dimensions
+        phys_depth = 32;
+        phys_width = 20;
+    }
 
 }
 
@@ -151,13 +212,18 @@ void RAM::mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio){
                 else decoders = 1;
                 
                 //calculating total muxes needed (extra)
-                mux_count = logical_ram_width;
-                int num_luts;
-                int b;
-                for(int row = mux_count; row >=1; row--){
-                    num_luts = (S + 5)/6;
-                    b = num_luts*(num_luts+1)/2;
-                    muxes += row  *  (b*(b+1)/2);
+                if(bram_type == LUTRAM){
+                    muxes = logical_ram_width;
+                }
+                else{
+                    mux_count = logical_ram_width;
+                    int num_luts;
+                    int b;
+                    for(int row = mux_count; row >=1; row--){
+                        num_luts = (S + 5)/6;
+                        b = num_luts*(num_luts+1)/2;
+                        muxes += row  *  (b*(b+1)/2);
+                    }
                 }
 
                 extra_LUTs = decoders + muxes;

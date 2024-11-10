@@ -49,6 +49,7 @@ public:
     void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
     void clearMapping();
     void mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio);
+    void mapLUTRAM();
 
     void printRamMapping(ofstream& mapping_file);
     void printLogicalRAMs();
