@@ -51,7 +51,6 @@ int main(int argc, char *argv[]) {
     //mapper.printAllCircuits();
     mapper.mapPhysicalRAM(atoi(argv[4]), size, max_width, ratio, gen_table);
     mapper.genMappingFile(argv[3]);
-    //cout << "Geometric Average: " << scientific << mapper.calcGeoAverage() << endl;
 
     return 0;
 

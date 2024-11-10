@@ -1,15 +1,7 @@
 #include "RamMapper.h"
 
 using namespace std;
-
-RamMapper::RamMapper(){
-
-}
-
-RamMapper::~RamMapper(){
-
-}
-
+using namespace std::chrono;
 
 void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBlockCount){
 
@@ -62,26 +54,35 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
 void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, int bram_ratio, int generate_table){
 
     if(architecture == 1 ){
+
+        auto start = high_resolution_clock::now();
         for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
             (*i).mapBRAMS(architecture);
         }
+        auto stop = high_resolution_clock::now();
         
         geo_ave_area = calcGeoAverage();
+        auto runtime = duration_cast<seconds>(stop - start);
             
         cout << "Geo Average Area: " << scientific << geo_ave_area << endl;
+        cout << "CPU Runtime: " << scientific << runtime.count() << endl;
     }
     else if(architecture == 2 || architecture == 3){
 
         if(generate_table == 0){
 
             //start looping through all circuits
+            auto start = high_resolution_clock::now();
             for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
                 (*i).mapBRAMS2(architecture, bram_size, max_width, bram_ratio);
             }
+            auto stop = high_resolution_clock::now();
             
             geo_ave_area = calcGeoAverage();
+            auto runtime = duration_cast<seconds>(stop - start);
             
             cout << "BRAM size: " << bram_size << "k " << "Max Width: " << max_width << " LB per RAM: " << bram_ratio << " Geo Average Area: " << scientific << geo_ave_area << endl;
+            cout << "CPU Runtime: " << scientific << runtime.count() << endl;
 
         }
         else{

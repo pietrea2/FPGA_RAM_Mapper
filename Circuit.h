@@ -43,13 +43,10 @@ public:
     int getCircuitID();
     void setLogicBlocks(int amount);
     void insertLogicalRAM(int id, string mode, int depth, int width);
-    void mapBRAMS(int arch);
+
     void mapBRAMS2(int arch, int size, int width, int ratio);
-    void mapSingleBRAM(int size, int width, int ratio);
     void clearMapping();
 
-    void calcTotalArea();
-    void calcTotalArea2(int size, int width, int ratio);
     void calcTotalArea3(int arch, int size, int width, int ratio);
     long double getCircuitArea();
     long long calcRamArea(int size, int max_width);

@@ -37,10 +37,6 @@ private:
     long int ram_area = 0;
 
 
-
-
-
-
 public:
     //init and del functions
     RAM();
@@ -48,21 +44,13 @@ public:
 
     void setLogicalRAM(int id, string mode, int depth, int width);
     string romToString(LogicalRamModes mode);
-    vector<long long> mapBRAMS(int arch);
     vector<long long> mapBRAMS2(int arch, int size, int width, int ratio);
-    vector<long long> mapArch2BRAM(int size, int width, int ratio);
     int  calcPhysicalBlocks(int logical_length, int physical_length);
     void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
     void clearMapping();
-    void mapLUTRAM();
-    void mapBRAM8K(int arch);
-    void mapBRAM128K(int arch);
-    void mapBRAM(int size, int max_width, int ratio);
     void mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio);
-
 
     void printRamMapping(ofstream& mapping_file);
     void printLogicalRAMs();
-
 
 };

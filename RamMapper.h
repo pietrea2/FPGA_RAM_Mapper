@@ -11,7 +11,9 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <chrono>
 
+//using namespace std::chrono;
 using namespace std;
 
 class RamMapper{
@@ -23,18 +25,11 @@ private:
 
 public:
 
-    //init and del functions
-    RamMapper();
-    ~RamMapper();
     void parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBlockCount);
     void mapPhysicalRAM(int architecture, int bram_size, int max_width, int bram_ratio, int generate_table);
     void genMappingFile(char *mapping_file);
 
     long double calcGeoAverage();
-
     void printAllCircuits();
-
-
-
-
+    
 };
