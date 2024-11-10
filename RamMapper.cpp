@@ -43,6 +43,7 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
     
     while( logicalRamFile >> circ_id >> ramID >> ramMode >> depth >> width ){
         circuit_array[circ_id].insertLogicalRAM(ramID, ramMode, depth, width);
+        circuit_array[circ_id].sort_RAMS();
     }
 
     logicalRamFile.close();

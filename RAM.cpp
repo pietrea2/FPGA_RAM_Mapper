@@ -15,6 +15,7 @@ void RAM::setLogicalRAM(int id, string mode, int depth, int width){
     logical_ram_id = id;
     logical_ram_depth = depth;
     logical_ram_width = width;
+    logical_size = depth * width;
 
     if( mode == "ROM" ){
         logical_ram_mode = LogicalRamModes::ROM;
@@ -182,7 +183,7 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
     }
 
     //variables needed to keep track of mapping
-    long int cur_area;
+    long double cur_area;
     int depth;
     int S = 1;
     int P;
@@ -268,7 +269,7 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
                                                                cur_additional_LUT_amount + additional_LUTs,
                                                                num_logic_blocks);
 
-        if( (ram_area == 0 || cur_area <= ram_area) && !invalid_mapping ){
+        if( (total_FPGA_area == 0.0 || cur_area <= total_FPGA_area) && !invalid_mapping ){
             saveRamMapping(extra_LUTs, logical_ram_id, P, S, bram_type, width, depth, cur_area);
 
         }
@@ -461,7 +462,7 @@ int RAM::calcPhysicalBlocks(int logical_length, int physical_length){
 
 }
 
-void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area){
+void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long double area){
 
     additional_LUTs_needed = additional_LUTs;
     physical_ram_id = phys_ram_id;
@@ -472,7 +473,7 @@ void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s
 
     physical_width = phys_width;
     physical_depth = phys_depth;
-    ram_area = area;
+    total_FPGA_area = area;
 
 }
 

@@ -26,6 +26,7 @@ private:
     LogicalRamModes logical_ram_mode;
     int logical_ram_depth;
     int logical_ram_width;
+    int logical_size;
 
     //physical RAM data members (BRAM)
     BRAMs BRAM_type;
@@ -51,12 +52,16 @@ public:
     RAM();
     ~RAM();
 
+    bool operator < (const RAM& obj) const{
+        return logical_size > obj.logical_size;
+    }
+
     void setLogicalRAM(int id, string mode, int depth, int width);
     string romToString(LogicalRamModes mode);
     vector<long long> mapBRAMS2(int arch, int size, int width, int ratio);
     vector<long long> mapBRAMS3(int arch, int size, int width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks);
     int  calcPhysicalBlocks(int logical_length, int physical_length);
-    void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, int area);
+    void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long double area);
     void clearMapping();
     void mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio);
     void mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks);

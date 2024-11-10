@@ -28,6 +28,12 @@ void Circuit::insertLogicalRAM(int id, string mode, int depth, int width){
     ram_array.push_back(ram);
 }
 
+void Circuit::sort_RAMS(){
+
+    sort(ram_array.begin(), ram_array.end());
+
+}
+
 void Circuit::mapBRAMS2(int arch, int size, int width, int ratio){
 
     //ram by smallest individual ram area

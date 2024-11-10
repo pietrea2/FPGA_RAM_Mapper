@@ -43,6 +43,7 @@ public:
     int getCircuitID();
     void setLogicBlocks(int amount);
     void insertLogicalRAM(int id, string mode, int depth, int width);
+    void sort_RAMS();
 
     void mapBRAMS2(int arch, int size, int width, int ratio);
     void mapBRAMS3(int arch, int size, int width, int ratio);
