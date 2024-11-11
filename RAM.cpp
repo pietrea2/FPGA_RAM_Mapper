@@ -73,9 +73,9 @@ vector<long long> RAM::mapBRAMS2(int arch, int size, int width, int ratio){
             mapBRAM2(BRAM_WITHLUT, size, width, ratio);
             break;
         case 4:
-            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM2(LUTRAM, 640, 20, 1);
-            mapBRAM2(BRAM_1, 8192, 32, 6);
-            mapBRAM2(BRAM_2, 131072, 128, 61);
+            //if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM2(LUTRAM, 640, 20, 1);
+            mapBRAM2(BRAM_1, 1024*4, 16, 4);
+            mapBRAM2(BRAM_2, 1024*64, 64, 64);
             break;
         default:
             break;
@@ -520,10 +520,10 @@ void RAM::printRamMapping(ofstream& mapping_file){
             bram_type = 2;
             break;
         case BRAM_1:
-            bram_type = 2;
+            bram_type = 1;
             break;
         case BRAM_2:
-            bram_type = 3;
+            bram_type = 2;
             break;
     }
 
