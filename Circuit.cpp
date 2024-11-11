@@ -55,7 +55,7 @@ void Circuit::mapBRAMS2(int arch, int size, int width, int ratio){
 
 void Circuit::mapBRAMS3(int arch, int size, int width, int ratio){
 
-    //ram by smallest individual ram area
+    //ram by smallest global FPGA area
     for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
         
         block_count = (*i).mapBRAMS3(arch, size, width, ratio, LUT_blocks_used, BRAM_8K_used, BRAM_128K_used, BRAM_used, additional_LUTs, num_logic_blocks);

@@ -48,7 +48,6 @@ int main(int argc, char *argv[]) {
 
     RamMapper mapper;
     mapper.parseBenchmarkCircuits(argv[1], argv[2]);
-    //mapper.printAllCircuits();
     mapper.mapPhysicalRAM(atoi(argv[4]), size, max_width, ratio, gen_table);
     mapper.genMappingFile(argv[3]);
 

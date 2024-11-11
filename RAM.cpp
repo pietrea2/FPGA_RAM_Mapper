@@ -163,8 +163,6 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
     long long cur_BRAM_amount = 0;
     long long cur_additional_LUT_amount = 0;
 
-    
-
     //loop through all possible width and depth configuration
     //calc max_width available for this logical RAM type
     if(logical_ram_mode == LogicalRamModes::TrueDualPort) max_width = max_width / 2;
@@ -190,7 +188,7 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
     long int muxes = 0;
     int mux_count;
     int decoders = 0;
-    long int extra_LUTs = 0;
+    long long extra_LUTs = 0;
     int extra_logic_blocks = 0;
     int invalid_mapping = 0;
 
@@ -270,7 +268,7 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
                                                                num_logic_blocks);
 
         if( (total_FPGA_area == 0.0 || cur_area <= total_FPGA_area) && !invalid_mapping ){
-            saveRamMapping(extra_LUTs, logical_ram_id, P, S, bram_type, width, depth, cur_area);
+            saveRamMapping(cur_additional_LUT_amount, logical_ram_id, P, S, bram_type, width, depth, cur_area);
 
         }
 
@@ -462,7 +460,7 @@ int RAM::calcPhysicalBlocks(int logical_length, int physical_length){
 
 }
 
-void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long double area){
+void RAM::saveRamMapping(long long additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long double area){
 
     additional_LUTs_needed = additional_LUTs;
     physical_ram_id = phys_ram_id;
@@ -486,7 +484,7 @@ void RAM::clearMapping(){
     BRAM_type = LUTRAM;
     physical_width = 0;
     physical_depth = 0;
-    ram_area = 0;
+    total_FPGA_area = 0;
 
 }
 
