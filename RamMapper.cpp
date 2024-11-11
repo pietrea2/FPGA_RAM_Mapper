@@ -10,7 +10,6 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
     logicalCountFile.open(logicalBlockCount);
     if( logicalCountFile.is_open() ){
         getline(logicalCountFile, input);
-        //cout << input << endl;
     }
     
     int circ_id;
@@ -32,9 +31,7 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
     if( logicalRamFile.is_open() ){
         //Pass through first 2 lines in file
         getline(logicalRamFile, input);
-        //cout << input << endl;
         getline(logicalRamFile, input);
-        //cout << input << endl;
     }
     
     int ramID;

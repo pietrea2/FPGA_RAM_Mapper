@@ -80,9 +80,6 @@ void Circuit::clearMapping(){
     BRAM_128K_used = 0;
     BRAM_used = 0;
     additional_LUTs = 0;
-
-    regular_LBs_used = 0;
-    required_LBs = 0;
     total_FPGA_area = 0.0;
 
     for (auto i = ram_array.begin(); i != ram_array.end(); ++i){

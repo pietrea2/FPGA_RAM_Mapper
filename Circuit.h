@@ -28,9 +28,6 @@ private:
     long long BRAM_128K_used = 0;
     long long BRAM_used = 0;
     long long additional_LUTs = 0;
-
-    int regular_LBs_used = 0;
-    int required_LBs = 0;
     long double total_FPGA_area = 0.0;
 
 

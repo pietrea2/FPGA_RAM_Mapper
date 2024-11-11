@@ -113,16 +113,16 @@ vector<long long> RAM::mapBRAMS3(int arch, int size, int width, int ratio, long 
 
     switch (arch) {
         case 1:
-            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM3(arch, LUTRAM, 640, 20, 1, LUTS, BRAM_8KS, BRAM_128KS, BRAMS, add_LUTS, num_logic_blocks);
-            mapBRAM3(arch, BRAM8K, 8192, 32, 10, LUTS, BRAM_8KS, BRAM_128KS, BRAMS, add_LUTS, num_logic_blocks);
-            mapBRAM3(arch, BRAM128K, 131072, 128, 300, LUTS, BRAM_8KS, BRAM_128KS, BRAMS, add_LUTS, num_logic_blocks);
+            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM3(arch, LUTRAM, 640, 20, 1, num_logic_blocks);
+            mapBRAM3(arch, BRAM8K, 8192, 32, 10, num_logic_blocks);
+            mapBRAM3(arch, BRAM128K, 131072, 128, 300, num_logic_blocks);
             break;
         case 2:
-            mapBRAM3(arch, BRAM_NOLUT, size, width, ratio, LUTS, BRAM_8KS, BRAM_128KS, BRAMS, add_LUTS, num_logic_blocks);
+            mapBRAM3(arch, BRAM_NOLUT, size, width, ratio, num_logic_blocks);
             break;
         case 3:
-            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM3(arch, LUTRAM, 640, 20, 1, LUTS, BRAM_8KS, BRAM_128KS, BRAMS, add_LUTS, num_logic_blocks);
-            mapBRAM3(arch, BRAM_WITHLUT, size, width, ratio, LUTS, BRAM_8KS, BRAM_128KS, BRAMS, add_LUTS, num_logic_blocks);
+            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM3(arch, LUTRAM, 640, 20, 1, num_logic_blocks);
+            mapBRAM3(arch, BRAM_WITHLUT, size, width, ratio, num_logic_blocks);
             break;
         default:
             break;
@@ -155,7 +155,7 @@ vector<long long> RAM::mapBRAMS3(int arch, int size, int width, int ratio, long 
 
 }
 
-void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks){
+void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio, int num_logic_blocks){
 
     long long cur_LUTRAM_amount = 0;
     long long cur_BRAM8K_amount = 0;
@@ -172,23 +172,21 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
     int min_width;
 
     if(bram_type == LUTRAM){
-        bram_area = 40000;
         min_width = 10;
     }
     else{
-        bram_area = 9000 + 5*bram_size + 90*sqrt(bram_size) + 1200*max_width;
         min_width = 1;
     }
 
     //variables needed to keep track of mapping
-    long double cur_area;
+    long int cur_area;
     int depth;
     int S = 1;
     int P;
     long int muxes = 0;
     int mux_count;
     int decoders = 0;
-    long long extra_LUTs = 0;
+    long int extra_LUTs = 0;
     int extra_logic_blocks = 0;
     int invalid_mapping = 0;
 
@@ -210,7 +208,7 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
                 else decoders = 1;
                 
                 //calculating total muxes needed (extra)
-                if(0){
+                if(bram_type == LUTRAM){
                     muxes = logical_ram_width;
                 }
                 else{
@@ -267,8 +265,8 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
                                                                cur_additional_LUT_amount + additional_LUTs,
                                                                num_logic_blocks);
 
-        if( (total_FPGA_area == 0.0 || cur_area <= total_FPGA_area) && !invalid_mapping ){
-            saveRamMapping(cur_additional_LUT_amount, logical_ram_id, P, S, bram_type, width, depth, cur_area);
+        if( (total_FPGA_area == 0 || cur_area < total_FPGA_area) && !invalid_mapping ){
+            saveRamMapping(cur_additional_LUT_amount, logical_ram_id, P, S, bram_type, width, depth, 0, cur_area);
 
         }
 
@@ -276,9 +274,9 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
 
 }
 
-long double RAM::calcFPGAArea(int arch, int size, int width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks){
+long int RAM::calcFPGAArea(int arch, int size, int width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks){
 
-    long double area;
+    long int area;
 
     if(arch == 1){
 
@@ -444,7 +442,7 @@ void RAM::mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio){
         cur_area = S * P * bram_area + extra_logic_blocks * 35000;
 
         if( (ram_area == 0 || cur_area < ram_area) && !invalid_mapping ){
-            saveRamMapping(extra_LUTs, logical_ram_id, P, S, bram_type, width, depth, cur_area);
+            saveRamMapping(extra_LUTs, logical_ram_id, P, S, bram_type, width, depth, cur_area, 0);
         }
 
     }
@@ -460,7 +458,7 @@ int RAM::calcPhysicalBlocks(int logical_length, int physical_length){
 
 }
 
-void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long int area){
+void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long int area, long int area_fpga){
 
     additional_LUTs_needed = additional_LUTs;
     physical_ram_id = phys_ram_id;
@@ -472,6 +470,7 @@ void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s
     physical_width = phys_width;
     physical_depth = phys_depth;
     ram_area = area;
+    total_FPGA_area = area_fpga;
 
 }
 
@@ -485,6 +484,7 @@ void RAM::clearMapping(){
     physical_width = 0;
     physical_depth = 0;
     ram_area = 0;
+    total_FPGA_area = 0;
 
 }
 
