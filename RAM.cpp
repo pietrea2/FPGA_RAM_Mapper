@@ -72,6 +72,11 @@ vector<long long> RAM::mapBRAMS2(int arch, int size, int width, int ratio){
             if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM2(LUTRAM, 640, 20, 1);
             mapBRAM2(BRAM_WITHLUT, size, width, ratio);
             break;
+        case 4:
+            if(logical_ram_mode != LogicalRamModes::TrueDualPort) mapBRAM2(LUTRAM, 640, 20, 1);
+            mapBRAM2(BRAM_1, 8192, 32, 6);
+            mapBRAM2(BRAM_2, 131072, 128, 61);
+            break;
         default:
             break;
     }
@@ -80,6 +85,8 @@ vector<long long> RAM::mapBRAMS2(int arch, int size, int width, int ratio){
     long long BRAM8K_amount = 0;
     long long BRAM128K_amount = 0;
     long long BRAM_amount = 0;
+    long long BRAM_1_amount = 0;
+    long long BRAM_2_amount = 0;
 
     switch (BRAM_type){
         case 1:
@@ -97,8 +104,14 @@ vector<long long> RAM::mapBRAMS2(int arch, int size, int width, int ratio){
         case 5:
             BRAM_amount = parallel_RAMs * series_RAMs;
             break;
+        case 6:
+            BRAM_1_amount = parallel_RAMs * series_RAMs;
+            break;
+        case 7:
+            BRAM_2_amount = parallel_RAMs * series_RAMs;
+            break;
     }
-    vector<long long> blocks_needed = {LUTRAM_amount, BRAM8K_amount, BRAM128K_amount, BRAM_amount, additional_LUTs_needed};
+    vector<long long> blocks_needed = {LUTRAM_amount, BRAM8K_amount, BRAM128K_amount, BRAM_amount, additional_LUTs_needed, BRAM_1_amount, BRAM_2_amount};
     return blocks_needed;
 
 }
@@ -505,6 +518,12 @@ void RAM::printRamMapping(ofstream& mapping_file){
             break;
         case BRAM_WITHLUT:
             bram_type = 2;
+            break;
+        case BRAM_1:
+            bram_type = 2;
+            break;
+        case BRAM_2:
+            bram_type = 3;
             break;
     }
 

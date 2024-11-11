@@ -131,6 +131,20 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
         }
         
     }
+    else if(architecture == 4){
+
+        clock_t start = clock();
+        for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
+            (*i).mapBRAMS2(architecture, 0, 0, 0);
+        }
+        clock_t finish = clock();
+        
+        geo_ave_area = calcGeoAverage();
+            
+        cout << "Geo Average Area: " << scientific << geo_ave_area << endl;
+        cout << "CPU Runtime: " << scientific <<  (double)(finish - start)/CLOCKS_PER_SEC << endl;
+
+    }
 
 
 

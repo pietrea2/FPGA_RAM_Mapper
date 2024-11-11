@@ -46,6 +46,8 @@ void Circuit::mapBRAMS2(int arch, int size, int width, int ratio){
         BRAM_128K_used += block_count[2];
         BRAM_used += block_count[3];
         additional_LUTs += block_count[4];
+        BRAM_1_used += block_count[5];
+        BRAM_2_used += block_count[6];
     }
 
     calcTotalArea3(arch, size, width, ratio);
@@ -79,6 +81,8 @@ void Circuit::clearMapping(){
     BRAM_8K_used = 0;
     BRAM_128K_used = 0;
     BRAM_used = 0;
+    BRAM_1_used = 0;
+    BRAM_2_used = 0;
     additional_LUTs = 0;
     total_FPGA_area = 0.0;
 
@@ -163,7 +167,30 @@ void Circuit::calcTotalArea3(int arch, int size, int width, int ratio){
 
     }
     else if(arch == 4){
+        int LUTRAM_ratio = 1;
+        int BRAM_1_ratio = 6;
+        int BRAM_2_ratio = 61;
+        
+        long long extra_logic_blocks = additional_LUTs / 10;
+        if(additional_LUTs % 10) extra_logic_blocks += 1;
 
+        long long LUT_logic_blocks = LUT_blocks_used * LUTRAM_ratio;
+        long long BRAM_1_logic_blocks = BRAM_1_used * BRAM_1_ratio;
+        long long BRAM_2_logic_blocks = BRAM_2_used * BRAM_2_ratio;
+        long long total_logic_blocks_required = extra_logic_blocks + num_logic_blocks + LUT_logic_blocks;
+
+        vector<long long> logic_blocks = {LUT_logic_blocks, BRAM_1_logic_blocks, BRAM_2_logic_blocks, total_logic_blocks_required};
+        long long limiting_factor = *max_element(logic_blocks.begin(), logic_blocks.end());
+
+        int num_1_BRAMs = (int)limiting_factor / BRAM_1_ratio;
+        int num_2_BRAMs = (int)limiting_factor / BRAM_2_ratio;
+
+        long long area_LBs = limiting_factor * ( (LUT_logic_blocks != 0) ? 37500 : 35000 );
+        long long area_1 = num_1_BRAMs * calcRamArea(8192, 32);
+        long long area_2 = num_2_BRAMs * calcRamArea(131072, 128);
+
+        area = area_LBs + area_1 + area_2;
+        total_FPGA_area = area;
     }
 
 }

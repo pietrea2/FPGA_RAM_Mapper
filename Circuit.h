@@ -26,7 +26,9 @@ private:
     long long LUT_blocks_used = 0;
     long long BRAM_8K_used = 0;
     long long BRAM_128K_used = 0;
-    long long BRAM_used = 0;
+    long long BRAM_used = 0;        //for table 2 and 3 (BRAM size exploration)
+    int BRAM_1_used = 0;            //for custom architecture in part 4
+    int BRAM_2_used = 0;
     long long additional_LUTs = 0;
     long double total_FPGA_area = 0.0;
 

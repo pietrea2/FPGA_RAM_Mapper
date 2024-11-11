@@ -17,7 +17,7 @@ using namespace std;
 class RAM{
 
     enum LogicalRamModes { ROM, SinglePort, SimpleDualPort, TrueDualPort };
-    enum BRAMs { LUTRAM=1, BRAM8K, BRAM128K, BRAM_NOLUT, BRAM_WITHLUT };
+    enum BRAMs { LUTRAM=1, BRAM8K, BRAM128K, BRAM_NOLUT, BRAM_WITHLUT, BRAM_1, BRAM_2 };
 
 private:
 
