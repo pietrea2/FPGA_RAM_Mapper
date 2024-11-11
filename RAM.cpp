@@ -168,7 +168,6 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
     if(logical_ram_mode == LogicalRamModes::TrueDualPort) max_width = max_width / 2;
     
     int bram_size = size;
-    long int bram_area;
     int min_width;
 
     if(bram_type == LUTRAM){
@@ -208,7 +207,7 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
                 else decoders = 1;
                 
                 //calculating total muxes needed (extra)
-                if(bram_type == LUTRAM){
+                if(0){
                     muxes = logical_ram_width;
                 }
                 else{
@@ -265,7 +264,7 @@ void RAM::mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio
                                                                cur_additional_LUT_amount + additional_LUTs,
                                                                num_logic_blocks);
 
-        if( (total_FPGA_area == 0 || cur_area < total_FPGA_area) && !invalid_mapping ){
+        if( (total_FPGA_area == 0 || cur_area <= total_FPGA_area) && !invalid_mapping ){
             saveRamMapping(cur_additional_LUT_amount, logical_ram_id, P, S, bram_type, width, depth, 0, cur_area);
 
         }

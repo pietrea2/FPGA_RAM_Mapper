@@ -1,0 +1,8 @@
+BRAM size: 1k Max Width: 4 LB per RAM: 2 Geo Average Area: 3.289566e+08
+BRAM size: 2k Max Width: 8 LB per RAM: 2 Geo Average Area: 2.476834e+08
+BRAM size: 4k Max Width: 16 LB per RAM: 4 Geo Average Area: 2.221212e+08
+BRAM size: 8k Max Width: 32 LB per RAM: 6 Geo Average Area: 2.156838e+08
+BRAM size: 16k Max Width: 32 LB per RAM: 8 Geo Average Area: 2.216362e+08
+BRAM size: 32k Max Width: 64 LB per RAM: 12 Geo Average Area: 2.427788e+08
+BRAM size: 64k Max Width: 64 LB per RAM: 16 Geo Average Area: 2.841202e+08
+BRAM size: 128k Max Width: 128 LB per RAM: 26 Geo Average Area: 3.518061e+08
