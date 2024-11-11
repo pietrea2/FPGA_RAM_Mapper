@@ -15,13 +15,14 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
     //to run the mapper and generate a mapping file, run command:
-    //  ./RAM_mapper logical_rams.txt logic_block_count.txt mapping.txt <Map Arch> <gen table>
+    //  ./RAM_mapper logical_rams.txt logic_block_count.txt mapping.txt <Map Arch>
     //
     //Specify <Map Arch> as int for desired architecture:
     //      1 -> Stratix-IV-Like Arch
     //      2 -> No LUTRAM, 1 type of BRAM
-    //          a) Can add following arguments if you want to specify BRAM: <size> <max_width> <ratio>
+    //          a) Can add following arguments if you want to specify BRAM: <size> <max_width> <ratio> <gen table>
     //      3 -> LUTRAM and 1 type of BRAM
+    //          a) Can add following arguments if you want to specify BRAM: <size> <max_width> <ratio> <gen table>
     //      4 -> Custom Arch
 
     //Specify <gen table> if you want the RamMapper to run and generate Table 2 or 3 (experimenting with BRAM size)

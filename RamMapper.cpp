@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//set up Circuit and RAM objects from benchmark circuit files
 void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBlockCount){
 
     //Parse logical block count file
@@ -48,13 +49,14 @@ void RamMapper::parseBenchmarkCircuits(char *logicalRAMsList, char * logicalBloc
 
 }
 
+//RAM mapping function (loop through all circuits)
 void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, int bram_ratio, int generate_table){
 
     if(architecture == 1 ){
 
         clock_t start = clock();
         for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-            (*i).mapBRAMS2(architecture, 0, 0, 0);
+            (*i).mapBRAMS(architecture, 0, 0, 0);
         }
         clock_t finish = clock();
         
@@ -71,7 +73,7 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
             //start looping through all circuits
             clock_t start = clock();
             for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-                (*i).mapBRAMS2(architecture, bram_size, max_width, bram_ratio);
+                (*i).mapBRAMS(architecture, bram_size, max_width, bram_ratio);
             }
             clock_t finish = clock();
             
@@ -102,7 +104,7 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
 
                         //start looping through all circuits
                         for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-                            (*i).mapBRAMS2(architecture, size*base_size, width, ratio);
+                            (*i).mapBRAMS(architecture, size*base_size, width, ratio);
                         }
 
                         curr_geo_average = calcGeoAverage();
@@ -122,8 +124,6 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
                     }
                 }
 
-                //keep track of all geo averages
-                //keep smallest area
                 cout << "BRAM size: " << size << "k " << "Max Width: " << best_width << " LB per RAM: " << best_ratio << " Geo Average Area: " << scientific << best_geo_average << endl;
                 
             }
@@ -135,7 +135,7 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
 
         clock_t start = clock();
         for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-            (*i).mapBRAMS2(architecture, 0, 0, 0);
+            (*i).mapBRAMS(architecture, 0, 0, 0);
         }
         clock_t finish = clock();
         
@@ -146,9 +146,6 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
 
     }
 
-
-
-    
 
 }
 

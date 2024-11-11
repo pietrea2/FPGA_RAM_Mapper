@@ -2,14 +2,6 @@
 
 using namespace std;
 
-Circuit::Circuit(){
-
-}
-
-Circuit::~Circuit(){
-
-}
-
 void Circuit::setCircuitID(int id){
     circuit_id = id;
 }
@@ -29,17 +21,15 @@ void Circuit::insertLogicalRAM(int id, string mode, int depth, int width){
 }
 
 void Circuit::sort_RAMS(){
-
     sort(ram_array.begin(), ram_array.end());
-
 }
 
-void Circuit::mapBRAMS2(int arch, int size, int width, int ratio){
+void Circuit::mapBRAMS(int arch, int size, int width, int ratio){
 
-    //ram by smallest individual ram area
+    //ram map: choose by smallest individual ram area
     for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
         
-        block_count = (*i).mapBRAMS2(arch, size, width, ratio);
+        block_count = (*i).mapBRAMS(arch, size, width, ratio);
         
         LUT_blocks_used += block_count[0];
         BRAM_8K_used += block_count[1];
@@ -50,28 +40,7 @@ void Circuit::mapBRAMS2(int arch, int size, int width, int ratio){
         BRAM_2_used += block_count[6];
     }
 
-    calcTotalArea3(arch, size, width, ratio);
-
-
-}
-
-void Circuit::mapBRAMS3(int arch, int size, int width, int ratio){
-
-    //ram by smallest global FPGA area
-    for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
-        
-        block_count = (*i).mapBRAMS3(arch, size, width, ratio, LUT_blocks_used, BRAM_8K_used, BRAM_128K_used, BRAM_used, additional_LUTs, num_logic_blocks);
-        
-        LUT_blocks_used += block_count[0];
-        BRAM_8K_used += block_count[1];
-        BRAM_128K_used += block_count[2];
-        BRAM_used += block_count[3];
-        additional_LUTs += block_count[4];
-    }
-
-    calcTotalArea3(arch, size, width, ratio);
-
-
+    calcTotalArea(arch, size, width, ratio);
 }
 
 void Circuit::clearMapping(){
@@ -91,7 +60,7 @@ void Circuit::clearMapping(){
     }
 }
 
-void Circuit::calcTotalArea3(int arch, int size, int width, int ratio){
+void Circuit::calcTotalArea(int arch, int size, int width, int ratio){
 
     long double area;
 
@@ -167,17 +136,16 @@ void Circuit::calcTotalArea3(int arch, int size, int width, int ratio){
 
     }
     else if(arch == 4){
-        //int LUTRAM_ratio = 1;
+        
         int BRAM_1_ratio = 4;
         int BRAM_2_ratio = 64;
         
         long long extra_logic_blocks = additional_LUTs / 10;
         if(additional_LUTs % 10) extra_logic_blocks += 1;
 
-        //long long LUT_logic_blocks = LUT_blocks_used * 2;
         long long BRAM_1_logic_blocks = BRAM_1_used * BRAM_1_ratio;
         long long BRAM_2_logic_blocks = BRAM_2_used * BRAM_2_ratio;
-        long long total_logic_blocks_required = extra_logic_blocks + num_logic_blocks; // + LUT_logic_blocks;
+        long long total_logic_blocks_required = extra_logic_blocks + num_logic_blocks;
 
         vector<long long> logic_blocks = {BRAM_1_logic_blocks, BRAM_2_logic_blocks, total_logic_blocks_required};
         long long limiting_factor = *max_element(logic_blocks.begin(), logic_blocks.end());
@@ -185,7 +153,6 @@ void Circuit::calcTotalArea3(int arch, int size, int width, int ratio){
         int num_1_BRAMs = (int)limiting_factor / BRAM_1_ratio;
         int num_2_BRAMs = (int)limiting_factor / BRAM_2_ratio;
 
-        //long long area_LBs = limiting_factor * ( (LUT_logic_blocks != 0) ? 37500 : 35000 );
         long long area_LBs = limiting_factor * 35000;
         long long area_1 = num_1_BRAMs * calcRamArea(1024*4, 16);
         long long area_2 = num_2_BRAMs * calcRamArea(1024*64, 64);
@@ -211,13 +178,11 @@ void Circuit::printCircuitMapping(ofstream& mapping_file){
         mapping_file << getCircuitID() << " ";
         (*i).printRamMapping(mapping_file);
     }
-
 }
 
 void Circuit::printCircuit(){
 
     cout << circuit_id << "   " << num_logic_blocks << endl;
-
     for (auto i = ram_array.begin(); i != ram_array.end(); ++i){
         (*i).printLogicalRAMs();
     }

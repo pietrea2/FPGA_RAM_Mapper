@@ -28,15 +28,12 @@ private:
     long long BRAM_128K_used = 0;
     long long BRAM_used = 0;        //for table 2 and 3 (BRAM size exploration)
     int BRAM_1_used = 0;            //for custom architecture in part 4
-    int BRAM_2_used = 0;
+    int BRAM_2_used = 0;            //for custom architecture in part 4
     long long additional_LUTs = 0;
     long double total_FPGA_area = 0.0;
 
 
 public:
-    //init and del functions
-    Circuit();
-    ~Circuit();
 
     void setCircuitID(int id);
     int getCircuitID();
@@ -44,16 +41,14 @@ public:
     void insertLogicalRAM(int id, string mode, int depth, int width);
     void sort_RAMS();
 
-    void mapBRAMS2(int arch, int size, int width, int ratio);
-    void mapBRAMS3(int arch, int size, int width, int ratio);
+    void mapBRAMS(int arch, int size, int width, int ratio);
     void clearMapping();
 
-    void calcTotalArea3(int arch, int size, int width, int ratio);
+    void calcTotalArea(int arch, int size, int width, int ratio);
     long double getCircuitArea();
     long long calcRamArea(int size, int max_width);
     
     void printCircuitMapping(ofstream& mapping_file);
     void printCircuit();
-
 
 };
