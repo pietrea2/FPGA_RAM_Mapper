@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
     //Specify <Map Arch> as int for desired architecture:
     //      1 -> Stratix-IV-Like Arch
     //      2 -> No LUTRAM, 1 type of BRAM
-    //          a) Can add following arguments if you want to specify BRAM: <size> <max_width> <ratio> <gen table>
+    //          a) Can add following arguments if you want to specify BRAM: <size> <max_width> <ratio>
     //      3 -> LUTRAM and 1 type of BRAM
-    //          a) Can add following arguments if you want to specify BRAM: <size> <max_width> <ratio> <gen table>
+    //          a) Can add following arguments if you want to specify BRAM: <size> <max_width> <ratio>
     //      4 -> Custom Arch
 
     //Specify <gen table> if you want the RamMapper to run and generate Table 2 or 3 (experimenting with BRAM size)
