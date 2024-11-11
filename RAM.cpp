@@ -460,7 +460,7 @@ int RAM::calcPhysicalBlocks(int logical_length, int physical_length){
 
 }
 
-void RAM::saveRamMapping(long long additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long double area){
+void RAM::saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long int area){
 
     additional_LUTs_needed = additional_LUTs;
     physical_ram_id = phys_ram_id;
@@ -471,7 +471,7 @@ void RAM::saveRamMapping(long long additional_LUTs, int phys_ram_id, int p, int 
 
     physical_width = phys_width;
     physical_depth = phys_depth;
-    total_FPGA_area = area;
+    ram_area = area;
 
 }
 
@@ -484,7 +484,7 @@ void RAM::clearMapping(){
     BRAM_type = LUTRAM;
     physical_width = 0;
     physical_depth = 0;
-    total_FPGA_area = 0;
+    ram_area = 0;
 
 }
 

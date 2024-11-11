@@ -111,8 +111,8 @@ void Circuit::calcTotalArea3(int arch, int size, int width, int ratio){
         vector<long long> logic_blocks = {LUT_logic_blocks, BRAM_8K_logic_blocks, BRAM_128K_logic_blocks, total_logic_blocks_required};
         long long limiting_factor = *max_element(logic_blocks.begin(), logic_blocks.end());
 
-        int num_8K_BRAMs = limiting_factor / BRAM_8K_ratio;
-        int num_128K_BRAMs = limiting_factor / BRAM_128K_ratio;
+        int num_8K_BRAMs = (int)limiting_factor / BRAM_8K_ratio;
+        int num_128K_BRAMs = (int)limiting_factor / BRAM_128K_ratio;
 
         long long area_LBs = limiting_factor * ( (LUT_logic_blocks != 0) ? 37500 : 35000 );
         long long area_8K = num_8K_BRAMs * calcRamArea(8192, 32);

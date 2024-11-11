@@ -57,7 +57,7 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
 
         clock_t start = clock();
         for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-            (*i).mapBRAMS3(architecture, 0, 0, 0);
+            (*i).mapBRAMS2(architecture, 0, 0, 0);
         }
         clock_t finish = clock();
         
@@ -74,7 +74,7 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
             //start looping through all circuits
             clock_t start = clock();
             for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-                (*i).mapBRAMS3(architecture, bram_size, max_width, bram_ratio);
+                (*i).mapBRAMS2(architecture, bram_size, max_width, bram_ratio);
             }
             clock_t finish = clock();
             
@@ -105,7 +105,7 @@ void RamMapper::mapPhysicalRAM(int architecture, int bram_size, int max_width, i
 
                         //start looping through all circuits
                         for (auto i = circuit_array.begin(); i != circuit_array.end(); ++i){
-                            (*i).mapBRAMS3(architecture, size*base_size, width, ratio);
+                            (*i).mapBRAMS2(architecture, size*base_size, width, ratio);
                         }
 
                         curr_geo_average = calcGeoAverage();

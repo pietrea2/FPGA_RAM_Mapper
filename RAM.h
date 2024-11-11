@@ -30,7 +30,7 @@ private:
 
     //physical RAM data members (BRAM)
     BRAMs BRAM_type;
-    long long additional_LUTs_needed;
+    long int additional_LUTs_needed;
     int physical_ram_id;
     int parallel_RAMs;
     int series_RAMs;
@@ -61,7 +61,7 @@ public:
     vector<long long> mapBRAMS2(int arch, int size, int width, int ratio);
     vector<long long> mapBRAMS3(int arch, int size, int width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks);
     int  calcPhysicalBlocks(int logical_length, int physical_length);
-    void saveRamMapping(long long additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long double area);
+    void saveRamMapping(long int additional_LUTs, int phys_ram_id, int p, int s, BRAMs ram_type, int phys_width, int phys_depth, long int area);
     void clearMapping();
     void mapBRAM2(BRAMs bram_type, int size, int max_width, int ratio);
     void mapBRAM3(int arch, BRAMs bram_type, int size, int max_width, int ratio, long long LUTS, long long BRAM_8KS, long long BRAM_128KS, long long BRAMS, long long add_LUTS, int num_logic_blocks);
