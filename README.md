@@ -2,7 +2,7 @@
 
 CAD software tool that maps logical memories to different physical block RAMs (BRAMs) on various FPGA architectures.
 It computes a mapping that minimizes the total FPGA area necessary.
-Complete description and evaluation of this mapper can be found in the [report directory](https://github.com/pietrea2/FPGA_RAM_Mapper/report).
+Complete description and evaluation of this mapper can be found in the [report directory](https://github.com/pietrea2/FPGA_RAM_Mapper/tree/main/report).
 
 Once unzipped, this folder contains:
 - all C++ source code files
